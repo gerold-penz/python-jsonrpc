@@ -10,10 +10,6 @@ class JsonRpcError(RuntimeError):
     def __init__(
         self, code = None, message = None, jsonrpc = None, id = None, data = None
     ):
-        """
-        Initializes the JSON-RPC-Error
-        """
-
         self.code = code
         self.message = message
         self.jsonrpc = jsonrpc
@@ -22,7 +18,6 @@ class JsonRpcError(RuntimeError):
 
 
 class ParseError(JsonRpcError):
-
     def __init__(self, jsonrpc = None, id = None, data = None):
         JsonRpcError.__init__(
             self,

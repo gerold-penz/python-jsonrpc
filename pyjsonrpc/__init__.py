@@ -389,4 +389,6 @@ class JsonRpc(object):
         See: http://web.archive.org/web/20100718181845/http://json-rpc.org/wd/JSON-RPC-1-1-WD-20060807.html#ServiceDescription
         """
 
+        # ToDo: not finished yet
+
         return u"[not finished]"
