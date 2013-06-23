@@ -1,2 +1,3 @@
 include history.rst
 include version.txt
+recursive-include examples *
