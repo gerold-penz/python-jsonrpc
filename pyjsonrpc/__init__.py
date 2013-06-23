@@ -3,14 +3,14 @@
 
 import sys
 import traceback
-import responses
-import errors
 try:
     import jsonlib2 as json
     _ParseError = json.ReadError
 except ImportError:
     import json
     _ParseError = ValueError
+import responses
+import errors
 
 
 class JsonRpc(object):
