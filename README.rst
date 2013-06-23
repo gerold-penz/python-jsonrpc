@@ -2,6 +2,8 @@
 Python JSON-RPC Library Client Server
 #####################################
 
+*Example*:
+
 .. code:: python
 
     #!/usr/bin/env python
@@ -29,6 +31,7 @@ Python JSON-RPC Library Client Server
 
     # Result
     response = pyjsonrpc.parse_json_response(response_json)
+    # 3
     print "Response:", response["result"]
 
 

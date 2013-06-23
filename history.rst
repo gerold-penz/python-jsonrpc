@@ -19,7 +19,7 @@ Version 0.2.1
 
 
 =============
-Version 0.2.0
+Version 0.2.1
 =============
 
 2013-06-23
@@ -27,6 +27,8 @@ Version 0.2.0
 - Responses module deleted
 
 - *call*-method finished
+
+- Simple example
 
 
 =============
