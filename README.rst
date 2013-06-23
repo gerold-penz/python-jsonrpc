@@ -2,7 +2,7 @@
 Python JSON-RPC Library Client Server
 #####################################
 
-.. code: python
+.. code:: python
 
     #!/usr/bin/env python
     # coding: utf-8
