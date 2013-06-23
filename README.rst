@@ -2,7 +2,7 @@
 Python JSON-RPC Library Client Server
 #####################################
 
-*Example*:
+**Example**:
 
 .. code:: python
 
