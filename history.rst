@@ -6,6 +6,17 @@ by Gerold Penz 2013
 
 
 =============
+Version 0.1.1
+=============
+
+2013-06-23
+
+- Responses splitted into successful response and errors
+
+- call-function
+
+
+=============
 Version 0.1.0
 =============
 
