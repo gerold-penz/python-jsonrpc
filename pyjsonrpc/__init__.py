@@ -122,13 +122,9 @@ class JsonRpc(object):
         # Every JSON-RPC request in a batch of requests
         for request in requests:
 
-            # jsonrpc
+            # Request-Data
             jsonrpc = request.get("jsonrpc")
-
-            # method
             method = str(request.get("method", ""))
-
-            # id
             id = request.get("id")
 
             # split positional and named params
@@ -207,7 +203,7 @@ class JsonRpc(object):
             responses_.append(response.to_dict())
         responses = responses_
 
-        # Return as JSON-String (batch or normal)
+        # Return as JSON-string (batch or normal)
         if len(requests) == 1:
             return json.dumps(responses[0])
         elif len(requests) > 1:
