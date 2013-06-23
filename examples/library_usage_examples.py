@@ -1,0 +1,97 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+import os
+import sys
+
+THISDIR = os.path.dirname(os.path.abspath(__file__))
+# Add app dir to path for testing pyjsonrpc
+APPDDIR = os.path.abspath(os.path.join(THISDIR, os.path.pardir))
+sys.path.insert(0, APPDDIR)
+
+import pyjsonrpc
+
+
+def add(a, b):
+    """
+    Returns a + b
+    """
+
+    return a + b
+
+
+def positional_params_example():
+
+    # Initialize JSON-RPC-Class with JSON-RPC-Methods
+    rpc = pyjsonrpc.JsonRpc(methods = {"add": add})
+
+    # Create JSON-RPC-string with positional params
+    request_json = pyjsonrpc.create_json_request("add", 1, 2)
+    # '{"params": [1, 2], "jsonrpc": "2.0", "method": "add", "id": "..."}'
+    print "Request-JSON:", repr(request_json)
+
+    # RPC-Call
+    response_json = rpc.call(request_json)
+    # '{"jsonrpc": "2.0", "id": "...", "result": 3}'
+    print "Response-JSON:", repr(response_json)
+
+    # Result
+    response = pyjsonrpc.parse_json_response(response_json)
+    print "Response:", response["result"]
+
+
+def named_params_example():
+
+    # Initialize JSON-RPC-Class with JSON-RPC-Methods
+    rpc = pyjsonrpc.JsonRpc(methods = {"add": add})
+
+    # Create JSON-RPC-string with named params
+    request_json = pyjsonrpc.create_json_request("add", a = 1, b = 2)
+    # '{"params": {"a": 1, "b": 2}, "jsonrpc": "2.0", "method": "add", "id": "..."}'
+    print "Request-JSON:", repr(request_json)
+
+    # RPC-Call
+    response_json = rpc.call(request_json)
+    # '{"jsonrpc": "2.0", "id": "...", "result": 3}'
+    print "Response-JSON:", repr(response_json)
+
+    # Result
+    response = pyjsonrpc.parse_json_response(response_json)
+    print "Response:", response["result"]
+
+
+def mixed_params_example():
+
+    # Initialize JSON-RPC-Class with JSON-RPC-Methods
+    rpc = pyjsonrpc.JsonRpc(methods = {"add": add})
+
+    # Create JSON-RPC-string with mixed params
+    request_json = pyjsonrpc.create_json_request("add", 1, b = 2)
+    # '{"params": {"b": 2, "__args": [1]}, "jsonrpc": "2.0", "method": "add", "id": "..."}'
+    print "Request-JSON:", repr(request_json)
+
+    # RPC-Call
+    response_json = rpc.call(request_json)
+    # '{"jsonrpc": "2.0", "id": "...", "result": 3}'
+    print "Response-JSON:", repr(response_json)
+
+    # Result
+    response = pyjsonrpc.parse_json_response(response_json)
+    print "Response:", response["result"]
+
+
+def main():
+
+    print "-" * 30
+    positional_params_example()
+
+    print "-" * 30
+    named_params_example()
+
+    print "-" * 30
+    mixed_params_example()
+
+
+if __name__ == "__main__":
+    main()
+

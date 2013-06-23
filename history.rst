@@ -6,6 +6,19 @@ by Gerold Penz 2013
 
 
 =============
+Version 0.2.1
+=============
+
+2013-06-23
+
+- Added a *system.describe*-method (not finished yet)
+
+- Added examples
+
+- Added *parse_json_response*-function
+
+
+=============
 Version 0.2.0
 =============
 

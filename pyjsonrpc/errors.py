@@ -37,9 +37,9 @@ class JsonRpcError(RuntimeError):
             if isinstance(self.data, basestring):
                 if self.message:
                     retdict["error"]["message"] = \
-                        self.message + u" " + self.data.capitalize()
+                        self.message + u" " + self.data
                 else:
-                    retdict["error"]["message"] = self.data.capitalize()
+                    retdict["error"]["message"] = self.data
         return retdict
 
 

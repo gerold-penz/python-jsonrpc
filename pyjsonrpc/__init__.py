@@ -3,6 +3,7 @@
 
 import sys
 import traceback
+import uuid
 try:
     import jsonlib2 as json
     _ParseError = json.ReadError
@@ -12,9 +13,9 @@ except ImportError:
 import errors
 
 
-def parse_json(json_string):
+def parse_json_request(json_string):
     """
-    Returns list with RPC-requests.
+    Returns list with RPC-requests as dictionaries.
 
     :return: List with RPC-request-dictionaries.
         Syntax::
@@ -48,6 +49,34 @@ def parse_json(json_string):
         return [data]
     else:
         raise errors.InvalidRequest()
+
+
+def create_json_request(method, *args, **kwargs):
+    """
+    Returns a JSON-RPC-String for one method
+    """
+
+    if kwargs:
+        params = kwargs
+        if args:
+            params["__args"] = args
+    else:
+        params = args
+    data = {
+        "method": unicode(method),
+        "id": unicode(uuid.uuid4()),
+        "jsonrpc": "2.0",
+        "params": params
+    }
+    return json.dumps(data)
+
+
+def parse_json_response(json_string):
+    """
+    Returns RPC-Response(s) as dictionary or as list with dictionaries
+    """
+
+    return json.loads(json_string)
 
 
 class Response(object):
@@ -102,13 +131,14 @@ class JsonRpc(object):
         """
 
         self.methods = methods or {}
+        self.methods["system.describe"] = self.system_describe
 
 
-    def call(self, json_string):
+    def call(self, json_request):
         """
         Do the work
 
-        :param json_string: JSON-RPC-string with one or more JSON-RPC-requests
+        :param json_request: JSON-RPC-string with one or more JSON-RPC-requests
 
         :return: JSON-RPC-string with one or more responses.
         """
@@ -117,7 +147,7 @@ class JsonRpc(object):
         responses = []
 
         # List with requests
-        requests = parse_json(json_string)
+        requests = parse_json_request(json_request)
 
         # Every JSON-RPC request in a batch of requests
         for request in requests:
@@ -212,13 +242,43 @@ class JsonRpc(object):
             return None
 
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, json_request):
         """
         Redirects the requests to *self.call*
         """
 
-        return self.call(*args, **kwargs)
+        return self.call(json_request)
 
 
+    def __getitem__(self, key):
+        """
+        Gets back the method
+        """
+
+        return self.methods[key]
 
 
+    def __setitem__(self, key, value):
+        """
+        Appends or replaces a method
+        """
+
+        self.methods[key] = value
+
+
+    def __delitem__(self, key):
+        """
+        Deletes a method
+        """
+
+        del self.methods[key]
+
+
+    def system_describe(self):
+        """
+        Returns a system description
+
+        See: http://web.archive.org/web/20100718181845/http://json-rpc.org/wd/JSON-RPC-1-1-WD-20060807.html#ServiceDescription
+        """
+
+        return u"[not finished]"
