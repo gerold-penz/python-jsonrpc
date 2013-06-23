@@ -11,10 +11,6 @@ Python JSON-RPC Library Client Server
 
 
     def add(a, b):
-        """
-        Returns a + b
-        """
-
         return a + b
 
 
