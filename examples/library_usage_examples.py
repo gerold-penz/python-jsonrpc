@@ -38,6 +38,7 @@ def positional_params_example():
     if response.error:
         print "Error:", response.error.code, response.error.message
     else:
+        # 3
         print "Result:", response.result
 
 
@@ -61,6 +62,7 @@ def named_params_example():
     if response.error:
         print "Error:", response.error.code, response.error.message
     else:
+        # 3
         print "Result:", response.result
 
 
@@ -84,6 +86,7 @@ def mixed_params_example():
     if response.error:
         print "Error:", response.error.code, response.error.message
     else:
+        # 3
         print "Result:", response.result
 
 

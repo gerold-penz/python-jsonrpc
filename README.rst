@@ -31,5 +31,6 @@ Python JSON-RPC Library Client Server
 
     # Result
     response = pyjsonrpc.parse_response_json(response_json)
-    print "Result:", response["result"]
+    # 3
+    print "Result:", response.result
 
