@@ -6,6 +6,17 @@ by Gerold Penz 2013
 
 
 =============
+Version 0.2.0
+=============
+
+2013-06-23
+
+- Responses module deleted
+
+- *call*-method finished
+
+
+=============
 Version 0.1.1
 =============
 

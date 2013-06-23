@@ -9,7 +9,7 @@ try:
 except ImportError:
     import json
     _ParseError = ValueError
-import rpcerrors
+import errors
 
 
 def parse_json(json_string):
@@ -32,14 +32,14 @@ def parse_json(json_string):
 
     # No JSON-String
     if json_string is None:
-        raise rpcerrors.InvalidRequest()
+        raise errors.InvalidRequest()
 
     # Parse
     try:
         data = json.loads(json_string)
-    except _ParseError, err:
+    except _ParseError:
         traceback_info = "".join(traceback.format_exception(*sys.exc_info()))
-        raise rpcerrors.ParseError(data = traceback_info)
+        raise errors.ParseError(data = traceback_info)
 
     # Finished
     if isinstance(data, list):
@@ -47,7 +47,7 @@ def parse_json(json_string):
     elif isinstance(data, dict):
         return [data]
     else:
-        raise rpcerrors.InvalidRequest()
+        raise errors.InvalidRequest()
 
 
 class Response(object):
@@ -61,6 +61,7 @@ class Response(object):
         :param id: JSON-RPC transaction id
         :param result: Result data
         """
+
         self.jsonrpc = jsonrpc
         self.id = id
         self.result = result
@@ -70,6 +71,7 @@ class Response(object):
         """
         Returns the response object as dictionary.
         """
+
         retdict = {}
         if self.jsonrpc:
             retdict["jsonrpc"] = self.jsonrpc
@@ -83,6 +85,7 @@ class Response(object):
 
 class JsonRpc(object):
     """
+    JSON-RPC
     """
 
     def __init__(self, methods = None):
@@ -143,7 +146,7 @@ class JsonRpc(object):
             if not method in self.methods:
                 # Method not found
                 responses.append(
-                    rpcerrors.MethodNotFound(jsonrpc = jsonrpc, id = id)
+                    errors.MethodNotFound(jsonrpc = jsonrpc, id = id)
                 )
                 continue
 
@@ -155,7 +158,7 @@ class JsonRpc(object):
                 if result is None:
                     if id:
                         responses.append(
-                            rpcerrors.InternalError(
+                            errors.InternalError(
                                 jsonrpc = jsonrpc,
                                 id = id,
                                 data = u"No result from JSON-RPC method."
@@ -164,63 +167,58 @@ class JsonRpc(object):
                 else:
                     # Successful response
                     responses.append(
-                        responses.SuccessfulResponse(
-                            jsonrpc = jsonrpc, id = id, result = result
-                        )
+                        Response(jsonrpc = jsonrpc, id = id, result = result)
                     )
             except TypeError, err:
                 traceback_info = "".join(traceback.format_exception(*sys.exc_info()))
-                cherrypy.log(traceback_info)
                 if "takes exactly" in unicode(err) and "arguments" in unicode(err):
                     responses.append(
-                        responses.InvalidParamsResponse(jsonrpc = jsonrpc, id = id).to_dict()
+                        errors.InvalidParams(
+                            jsonrpc = jsonrpc,
+                            id = id,
+                            data = traceback_info
+                        )
                     )
                 else:
                     responses.append(
-                        responses.InternalErrorResponse(
+                        errors.InternalError(
                             jsonrpc = jsonrpc,
                             id = id,
-                            data = unicode(err)
+                            data = traceback_info
                         )
                     )
             except BaseException, err:
                 traceback_info = "".join(traceback.format_exception(*sys.exc_info()))
-                cherrypy.log(traceback_info)
                 if hasattr(err, "data"):
                     error_data = err.data
                 else:
                     error_data = None
                 responses.append(
-                    responses.InternalErrorResponse(
+                    errors.InternalError(
                         jsonrpc = jsonrpc,
                         id = id,
-                        data = error_data or unicode(err)
+                        data = error_data or traceback_info
                     )
                 )
 
-
-
-
-
-
-        # Convert responses to dictionaries
+        # Convert responses and errors to dictionaries
         responses_ = []
         for response in responses:
             responses_.append(response.to_dict())
+        responses = responses_
 
-
-        # # Return as JSON-String (batch or normal)
-        # if len(requests) == 1:
-        #     return json.dumps(responses[0])
-        # elif len(requests) > 1:
-        #     return json.dumps(responses)
-        # else:
-        #     return None
-
+        # Return as JSON-String (batch or normal)
+        if len(requests) == 1:
+            return json.dumps(responses[0])
+        elif len(requests) > 1:
+            return json.dumps(responses)
+        else:
+            return None
 
 
     def __call__(self, *args, **kwargs):
         """
+        Redirects the requests to *self.call*
         """
 
         return self.call(*args, **kwargs)
