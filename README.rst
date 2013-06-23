@@ -20,7 +20,7 @@ Python JSON-RPC Library Client Server
     rpc = pyjsonrpc.JsonRpc(methods = {"add": add})
 
     # Create JSON-RPC-string with positional params
-    request_json = pyjsonrpc.create_json_request("add", 1, 2)
+    request_json = pyjsonrpc.create_request_json("add", 1, 2)
     # '{"params": [1, 2], "jsonrpc": "2.0", "method": "add", "id": "..."}'
     print "Request-JSON:", repr(request_json)
 
@@ -30,8 +30,6 @@ Python JSON-RPC Library Client Server
     print "Response-JSON:", repr(response_json)
 
     # Result
-    response = pyjsonrpc.parse_json_response(response_json)
-    # 3
+    response = pyjsonrpc.parse_response_json(response_json)
     print "Result:", response["result"]
-
 

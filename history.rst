@@ -6,6 +6,15 @@ by Gerold Penz 2013
 
 
 =============
+Version 0.2.2
+=============
+
+2013-06-23
+
+- Return of the Response-Object improved
+
+
+=============
 Version 0.2.1
 =============
 

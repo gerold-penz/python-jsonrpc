@@ -4,7 +4,7 @@
 
 class JsonRpcError(RuntimeError):
     """
-    Represents a JSON-RPC-Error
+    JSON-RPC-Error
     """
 
     def __init__(
@@ -19,28 +19,6 @@ class JsonRpcError(RuntimeError):
         self.jsonrpc = jsonrpc
         self.id = id
         self.data = data
-
-
-    def to_dict(self):
-        """
-        Returns the error object as dictionary.
-        """
-
-        retdict = {"error": {}}
-        if self.jsonrpc:
-            retdict["jsonrpc"] = self.jsonrpc
-        retdict["id"] = self.id
-        retdict["error"]["code"] = self.code
-        retdict["error"]["message"] = self.message
-        if self.data:
-            retdict["error"]["data"] = self.data
-            if isinstance(self.data, basestring):
-                if self.message:
-                    retdict["error"]["message"] = \
-                        self.message + u" " + self.data
-                else:
-                    retdict["error"]["message"] = self.data
-        return retdict
 
 
 class ParseError(JsonRpcError):
