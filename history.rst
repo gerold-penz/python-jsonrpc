@@ -6,6 +6,15 @@ by Gerold Penz 2013
 
 
 =============
+Version 0.2.3
+=============
+
+2013-06-24
+
+- Splitted into several modules
+
+
+=============
 Version 0.2.2
 =============
 
