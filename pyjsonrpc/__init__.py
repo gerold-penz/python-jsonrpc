@@ -57,12 +57,16 @@ class JsonRpc(object):
             id = request.id
             method = request.get("method", "")
             if not method in self.methods:
-                # Method not found
+                # Method not found error
                 responses.append(
-                    Response.from_error(
-                        rpcerror.MethodNotFound(jsonrpc = jsonrpc, id = id)
+                    Response(
+                        jsonrpc = jsonrpc,
+                        id = id,
+                        error = rpcerror.MethodNotFound()
                     )
                 )
+
+
                 continue
 
             # split positional and named params

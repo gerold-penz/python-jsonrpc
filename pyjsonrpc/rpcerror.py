@@ -2,6 +2,11 @@
 # coding: utf-8
 
 
+
+# ToDo: *jsonrpc*, *id* und *data* sollten hier entfernt werden
+
+
+
 class JsonRpcError(RuntimeError):
     """
     JSON-RPC-Error

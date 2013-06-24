@@ -26,9 +26,10 @@ class Response(dict):
         jsonrpc = None,
         id = None,
         result = None,
-        error_code = None,
-        error_message = None,
-        error_data = None
+        # error_code = None,
+        # error_message = None,
+        # error_data = None,
+        error = None
     ):
         """
         :param jsonrpc: JSON-RPC version string
@@ -114,6 +115,12 @@ class Response(dict):
         """
         Returns a Response-object, created from a RPC-Error
         """
+
+
+        # ToDo: Diese Funktion sollte entfernt werden. Es muss eine
+        # schönere Lösung dafür geben. Es kann doch nicht sein, dass
+        # im *Error* die Felder *jsonrpc* und *id* mitgeführt werden müssen.
+
 
         return cls(
             jsonrpc = rpc_error.jsonrpc,
