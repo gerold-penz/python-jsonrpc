@@ -3,8 +3,8 @@
 
 try:
     import jsonlib2 as json
-    ParseError = json.ReadError
+    JsonParseError = json.ReadError
 except ImportError:
     import json
-    ParseError = ValueError
+    JsonParseError = ValueError
 

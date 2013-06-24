@@ -13,6 +13,8 @@ Version 0.2.3
 
 - Splitted into several modules
 
+- New response-class
+
 
 =============
 Version 0.2.2

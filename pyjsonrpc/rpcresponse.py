@@ -1,23 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-from jsontools import json
-
-
-def parse_response_json(json_string):
-    """
-    Returns a RPC-Response or a list with RPC-Responses
-    """
-
-    data = json.loads(json_string)
-
-    if isinstance(data, list):
-        retlist = []
-        for response in data:
-            retlist.append(Response.from_dict(response))
-        return retlist
-    else:
-        return Response.from_dict(data)
+from rpcjson import json
 
 
 class Response(dict):
@@ -139,3 +123,18 @@ class Response(dict):
             error_data = rpc_error.data
         )
 
+
+def parse_response_json(json_string):
+    """
+    Returns a RPC-Response or a list with RPC-Responses
+    """
+
+    data = json.loads(json_string)
+
+    if isinstance(data, list):
+        retlist = []
+        for response in data:
+            retlist.append(Response.from_dict(response))
+        return retlist
+    else:
+        return Response.from_dict(data)

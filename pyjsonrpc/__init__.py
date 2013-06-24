@@ -3,8 +3,8 @@
 
 import sys
 import traceback
-import errors
-from jsontools import json, ParseError
+import rpcerror
+from rpcjson import json
 from rpcrequest import parse_request_json, create_request_json
 from rpcresponse import parse_response_json, Response
 
@@ -33,7 +33,8 @@ class JsonRpc(object):
 
     def call(self, json_request):
         """
-        Do the work
+        Parses the *json_request*, calls the function(s)
+        and returns the *json_response*.
 
         :param json_request: JSON-RPC-string with one or more JSON-RPC-requests
 
@@ -52,29 +53,20 @@ class JsonRpc(object):
         for request in requests:
 
             # Request-Data
-            jsonrpc = request.get("jsonrpc")
-            id = request.get("id")
-            method = str(request.get("method", ""))
+            jsonrpc = request.jsonrpc
+            id = request.id
+            method = request.get("method", "")
             if not method in self.methods:
                 # Method not found
                 responses.append(
                     Response.from_error(
-                        errors.MethodNotFound(jsonrpc = jsonrpc, id = id)
+                        rpcerror.MethodNotFound(jsonrpc = jsonrpc, id = id)
                     )
                 )
                 continue
 
             # split positional and named params
-            positional_params = []
-            named_params = {}
-            params = request.get("params", [])
-            if isinstance(params, list):
-                positional_params = params
-            elif isinstance(params, dict):
-                positional_params = params.get("__args", [])
-                if positional_params:
-                    del params["__args"]
-                named_params = params
+            positional_params, named_params = request.get_splitted_params()
 
             # Call the method with parameters
             try:
@@ -85,7 +77,7 @@ class JsonRpc(object):
                     if id:
                         responses.append(
                             Response.from_error(
-                                errors.InternalError(
+                                rpcerror.InternalError(
                                     jsonrpc = jsonrpc,
                                     id = id,
                                     data = u"No result from JSON-RPC method."
@@ -102,7 +94,7 @@ class JsonRpc(object):
                 if "takes exactly" in unicode(err) and "arguments" in unicode(err):
                     responses.append(
                         Response.from_error(
-                            errors.InvalidParams(
+                            rpcerror.InvalidParams(
                                 jsonrpc = jsonrpc,
                                 id = id,
                                 data = traceback_info
@@ -112,7 +104,7 @@ class JsonRpc(object):
                 else:
                     responses.append(
                         Response.from_error(
-                            errors.InternalError(
+                            rpcerror.InternalError(
                                 jsonrpc = jsonrpc,
                                 id = id,
                                 data = traceback_info
@@ -127,7 +119,7 @@ class JsonRpc(object):
                     error_data = None
                 responses.append(
                     Response.from_error(
-                        errors.InternalError(
+                        rpcerror.InternalError(
                             jsonrpc = jsonrpc,
                             id = id,
                             data = error_data or traceback_info
@@ -160,7 +152,7 @@ class JsonRpc(object):
 
     def __getitem__(self, key):
         """
-        Gets back the method
+        Gets back the requested method
         """
 
         return self.methods[key]
