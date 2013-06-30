@@ -16,6 +16,8 @@ Version 0.2.4
 - *Response.from_error*-method deleted. I found a better way (not so complex)
   to deliver error messages.
 
+- New *simple_example.py*
+
 
 =============
 Version 0.2.3

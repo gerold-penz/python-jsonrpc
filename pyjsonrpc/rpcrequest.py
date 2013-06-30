@@ -94,6 +94,10 @@ def parse_request_json(json_string):
 def create_request_json(method, *args, **kwargs):
     """
     Returns a JSON-RPC-String for a method
+
+    :param method: Name of the method
+    :param args: Positional parameters
+    :param kwargs: Named parameters
     """
 
     if kwargs:
