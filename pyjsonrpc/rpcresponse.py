@@ -12,6 +12,12 @@ class Response(dict):
     class Error(dict):
 
         def __init__(self, code, message, data):
+            """
+            :param code: Error code
+            :param message: Error message
+            :param data: Additional error informations
+            """
+
             dict.__init__(self, code = code, message = message, data = data)
             self.code = code
             self.message = message
@@ -26,26 +32,18 @@ class Response(dict):
         jsonrpc = None,
         id = None,
         result = None,
-        # error_code = None,
-        # error_message = None,
-        # error_data = None,
         error = None
     ):
         """
         :param jsonrpc: JSON-RPC version string
         :param id: JSON-RPC transaction id
         :param result: Result data
-        :param error_code: Error code
-        :param error_message: Error message
-        :param error_data: Additional error informations
         """
 
         self.jsonrpc = jsonrpc
         self.id = id
-        self.result = result if not error_code else None
-        self.error = self.Error(
-            code = error_code, message = error_message, data = error_data
-        )
+        self.result = result if not error else None
+        self.error = error
 
         dict.__init__(
             self,
@@ -91,43 +89,20 @@ class Response(dict):
         error = response_dict.get("error")
         if error:
             result = None
-            error_code = error.get("code")
-            error_message = error.get("message")
-            error_data = error.get("data")
+            error = cls.Error(
+                code = error.get("code"),
+                message = error.get("message"),
+                data = error.get("data")
+            )
         else:
             result = response_dict.get("result")
-            error_code = None
-            error_message = None
-            error_data = None
+            error = None
 
         return cls(
             jsonrpc = response_dict.get("jsonrpc"),
             id = response_dict.get("id"),
             result = result,
-            error_code = error_code,
-            error_message = error_message,
-            error_data = error_data
-        )
-
-
-    @classmethod
-    def from_error(cls, rpc_error):
-        """
-        Returns a Response-object, created from a RPC-Error
-        """
-
-
-        # ToDo: Diese Funktion sollte entfernt werden. Es muss eine
-        # schönere Lösung dafür geben. Es kann doch nicht sein, dass
-        # im *Error* die Felder *jsonrpc* und *id* mitgeführt werden müssen.
-
-
-        return cls(
-            jsonrpc = rpc_error.jsonrpc,
-            id = rpc_error.id,
-            error_code = rpc_error.code,
-            error_message = rpc_error.message,
-            error_data = rpc_error.data
+            error = error
         )
 
 

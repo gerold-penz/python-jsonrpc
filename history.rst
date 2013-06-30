@@ -6,6 +6,18 @@ by Gerold Penz 2013
 
 
 =============
+Version 0.2.4
+=============
+
+2013-06-30
+
+- *rcperror*-Module: Error classes shortened.
+
+- *Response.from_error*-method deleted. I found a better way (not so complex)
+  to deliver error messages.
+
+
+=============
 Version 0.2.3
 =============
 

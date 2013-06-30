@@ -80,10 +80,10 @@ class JsonRpc(object):
                 if result is None:
                     if id:
                         responses.append(
-                            Response.from_error(
-                                rpcerror.InternalError(
-                                    jsonrpc = jsonrpc,
-                                    id = id,
+                            Response(
+                                jsonrpc = jsonrpc,
+                                id = id,
+                                error = rpcerror.InternalError(
                                     data = u"No result from JSON-RPC method."
                                 )
                             )
@@ -97,22 +97,18 @@ class JsonRpc(object):
                 traceback_info = "".join(traceback.format_exception(*sys.exc_info()))
                 if "takes exactly" in unicode(err) and "arguments" in unicode(err):
                     responses.append(
-                        Response.from_error(
-                            rpcerror.InvalidParams(
-                                jsonrpc = jsonrpc,
-                                id = id,
-                                data = traceback_info
-                            )
+                        Response(
+                            jsonrpc = jsonrpc,
+                            id = id,
+                            error = rpcerror.InvalidParams(data = traceback_info)
                         )
                     )
                 else:
                     responses.append(
-                        Response.from_error(
-                            rpcerror.InternalError(
-                                jsonrpc = jsonrpc,
-                                id = id,
-                                data = traceback_info
-                            )
+                        Response(
+                            jsonrpc = jsonrpc,
+                            id = id,
+                            error = rpcerror.InternalError(data = traceback_info)
                         )
                     )
             except BaseException, err:
@@ -122,10 +118,10 @@ class JsonRpc(object):
                 else:
                     error_data = None
                 responses.append(
-                    Response.from_error(
-                        rpcerror.InternalError(
-                            jsonrpc = jsonrpc,
-                            id = id,
+                    Response(
+                        jsonrpc = jsonrpc,
+                        id = id,
+                        error = rpcerror.InternalError(
                             data = error_data or traceback_info
                         )
                     )
