@@ -62,10 +62,11 @@ class JsonRpc(object):
                     Response(
                         jsonrpc = jsonrpc,
                         id = id,
-                        error = rpcerror.MethodNotFound()
+                        error = rpcerror.MethodNotFound(
+                            data = u"Method name: '%s'" % method
+                        )
                     )
                 )
-
 
                 continue
 
