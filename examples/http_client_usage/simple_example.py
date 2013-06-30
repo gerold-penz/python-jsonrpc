@@ -13,6 +13,10 @@ sys.path.insert(0, APPDIR)
 import pyjsonrpc
 
 rpc_client = pyjsonrpc.HttpClient(url = "http://localhost:8080")
-print rpc_client.call("add", 1, 2)
 
+# Example with *call*
+print rpc_client.call("hello", u"Gerold from Österreich")
+
+# Example with *attribute* name
+print rpc_client.hello(u"Gerold from Österreich")
 

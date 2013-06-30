@@ -32,6 +32,17 @@ def http_request(url, json_string, username = None, password = None):
 
 class HttpClient(object):
 
+
+    class _Method(object):
+
+        def __init__(self, http_client_instance, method):
+            self.http_client_instance = http_client_instance
+            self.method = method
+
+        def __call__(self, *args, **kwargs):
+            return self.http_client_instance.call(self.method, *args, **kwargs)
+
+
     def __init__(
         self,
         url,
@@ -94,7 +105,11 @@ class HttpClient(object):
             return response.result
 
 
+    def __getattr__(self, method):
+        """
+        Allows the usage of attributes as *method* names.
+        """
 
-
+        return self._Method(http_client_instance = self, method = method)
 
 

@@ -52,3 +52,7 @@ Python JSON-RPC Library Client Server
     print http_client.call("add", 1, 2)
     # Result: 3
 
+    # It is also possible to use an *attribute* name as *method* name.
+    print http_client.add(1, 2)
+    # Result: 3
+
