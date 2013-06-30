@@ -11,7 +11,7 @@ Version 0.2.5
 
 2013-06-30
 
-- Now, it is possible to use the *attribute* name as *method* name for
+- Now, it is possible to use the *method* name as *attribute* name for
   HTTP-JSON-RPC Requests.
 
 
