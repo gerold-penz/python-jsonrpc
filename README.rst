@@ -13,24 +13,26 @@ Python JSON-RPC Library Client Server
 
 
     def add(a, b):
+        """Test function"""
         return a + b
 
 
-    # Initialize JSON-RPC-Class with JSON-RPC-Methods
+    # 1. Initialize JSON-RPC class with JSON-RPC method(s)
     rpc = pyjsonrpc.JsonRpc(methods = {"add": add})
 
-    # Create JSON-RPC-string with positional params
+    # 2. Create JSON-RPC string with parameters (= request string)
     request_json = pyjsonrpc.create_request_json("add", 1, 2)
-    # '{"params": [1, 2], "jsonrpc": "2.0", "method": "add", "id": "..."}'
-    print "Request-JSON:", repr(request_json)
+    # request_json = '{"method": "add", "params": [1, 2], "id": "...", "jsonrpc": "2.0"}'
 
-    # RPC-Call
+    # 3. Call the JSON-RPC function and get back the JSON-RPC result (= response string)
     response_json = rpc.call(request_json)
-    # '{"jsonrpc": "2.0", "id": "...", "result": 3}'
-    print "Response-JSON:", repr(response_json)
+    # response_json = '{"result": 3, "id": "...", "jsonrpc": "2.0"}'
 
-    # Result
+    # 4. Convert JSON-RPC string to Python objects
     response = pyjsonrpc.parse_response_json(response_json)
-    # 3
-    print "Result:", response.result
 
+    # 5. Print result or error
+    if response.error:
+        print "Error:", response.error.code, response.error.message
+    else:
+        print "Result:", response.result

@@ -23,9 +23,11 @@ rpc = pyjsonrpc.JsonRpc(methods = {"add": add})
 
 # 2. Create JSON-RPC string with parameters (= request string)
 request_json = pyjsonrpc.create_request_json("add", 1, 2)
+# request_json = '{"method": "add", "params": [1, 2], "id": "...", "jsonrpc": "2.0"}'
 
 # 3. Call the JSON-RPC function and get back the JSON-RPC result (= response string)
 response_json = rpc.call(request_json)
+# response_json = '{"result": 3, "id": "...", "jsonrpc": "2.0"}'
 
 # 4. Convert JSON-RPC string to Python objects
 response = pyjsonrpc.parse_response_json(response_json)

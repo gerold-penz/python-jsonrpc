@@ -18,6 +18,8 @@ Version 0.2.4
 
 - New *simple_example.py*
 
+- Examples directory structure changed
+
 
 =============
 Version 0.2.3
