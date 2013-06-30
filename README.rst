@@ -2,7 +2,8 @@
 Python JSON-RPC Library Client Server
 #####################################
 
-**Example**:
+
+**Library Usage Example**:
 
 .. code:: python
 
@@ -36,3 +37,18 @@ Python JSON-RPC Library Client Server
         print "Error:", response.error.code, response.error.message
     else:
         print "Result:", response.result
+
+
+**HTTP Client Example**:
+
+.. code:: python
+
+    #!/usr/bin/env python
+    # coding: utf-8
+
+    import pyjsonrpc
+
+    http_client = pyjsonrpc.HttpClient(url = "http://example.com/jsonrpc")
+    print http_client.call("add", 1, 2)
+    # Result: 3
+
