@@ -5,8 +5,9 @@ import sys
 import traceback
 import rpcerror
 from rpcjson import json
-from rpcrequest import parse_request_json, create_request_json
+from rpcrequest import parse_request_json, create_request_json, create_request_dict
 from rpcresponse import parse_response_json, Response
+from http import HttpClient
 
 
 class JsonRpc(object):

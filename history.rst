@@ -20,6 +20,12 @@ Version 0.2.4
 
 - Examples directory structure changed
 
+- HTTP-Request
+
+- HTTP-Client
+
+- HTTP-Client examples
+
 
 =============
 Version 0.2.3

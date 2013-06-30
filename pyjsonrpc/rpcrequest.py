@@ -91,9 +91,9 @@ def parse_request_json(json_string):
         )
 
 
-def create_request_json(method, *args, **kwargs):
+def create_request_dict(method, *args, **kwargs):
     """
-    Returns a JSON-RPC-String for a method
+    Returns a JSON-RPC-Dictionary for a method
 
     :param method: Name of the method
     :param args: Positional parameters
@@ -112,4 +112,16 @@ def create_request_json(method, *args, **kwargs):
         "jsonrpc": u"2.0",
         "params": params
     }
-    return json.dumps(data)
+    return data
+
+
+def create_request_json(method, *args, **kwargs):
+    """
+    Returns a JSON-RPC-String for a method
+
+    :param method: Name of the method
+    :param args: Positional parameters
+    :param kwargs: Named parameters
+    """
+
+    return json.dumps(create_request_dict(method, *args, **kwargs))

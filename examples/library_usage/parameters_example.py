@@ -5,8 +5,8 @@
 import os
 import sys
 THISDIR = os.path.dirname(os.path.abspath(__file__))
-APPDDIR = os.path.abspath(os.path.join(THISDIR, os.path.pardir))
-sys.path.insert(0, APPDDIR)
+APPDIR = os.path.abspath(os.path.join(THISDIR, os.path.pardir, os.path.pardir))
+sys.path.insert(0, APPDIR)
 # END --- required only for testing, remove in real world code --- END
 
 
