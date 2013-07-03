@@ -6,6 +6,15 @@ by Gerold Penz 2013
 
 
 =============
+Version 0.2.6
+=============
+
+2013-07-03
+
+- RPC-Errors are now better accessible
+
+
+=============
 Version 0.2.5
 =============
 

@@ -3,11 +3,12 @@
 
 import sys
 import traceback
-import rpcerror
 from rpcjson import json
 from rpcrequest import parse_request_json, create_request_json, create_request_dict
 from rpcresponse import parse_response_json, Response
 from http import HttpClient
+from rpcerror import InternalError, InvalidParams, InvalidRequest, \
+    JsonRpcError, MethodNotFound, ParseError
 
 
 class JsonRpc(object):
@@ -63,7 +64,7 @@ class JsonRpc(object):
                     Response(
                         jsonrpc = jsonrpc,
                         id = id,
-                        error = rpcerror.MethodNotFound(
+                        error = MethodNotFound(
                             data = u"Method name: '%s'" % method
                         )
                     )
@@ -85,7 +86,7 @@ class JsonRpc(object):
                             Response(
                                 jsonrpc = jsonrpc,
                                 id = id,
-                                error = rpcerror.InternalError(
+                                error = InternalError(
                                     data = u"No result from JSON-RPC method."
                                 )
                             )
@@ -102,7 +103,7 @@ class JsonRpc(object):
                         Response(
                             jsonrpc = jsonrpc,
                             id = id,
-                            error = rpcerror.InvalidParams(data = traceback_info)
+                            error = InvalidParams(data = traceback_info)
                         )
                     )
                 else:
@@ -110,7 +111,7 @@ class JsonRpc(object):
                         Response(
                             jsonrpc = jsonrpc,
                             id = id,
-                            error = rpcerror.InternalError(data = traceback_info)
+                            error = InternalError(data = traceback_info)
                         )
                     )
             except BaseException, err:
@@ -123,7 +124,7 @@ class JsonRpc(object):
                     Response(
                         jsonrpc = jsonrpc,
                         id = id,
-                        error = rpcerror.InternalError(
+                        error = InternalError(
                             data = error_data or traceback_info
                         )
                     )
