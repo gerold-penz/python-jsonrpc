@@ -6,6 +6,22 @@ by Gerold Penz 2013
 
 
 =============
+Version 0.3.0
+=============
+
+2013-07-04
+
+- Try to import fast JSON-libraries at first:
+
+  1. try to use *jsonlib2*
+  2. try to use *simplejson*
+  3. use builtin *json*
+
+- To simplify the code, now we use *bunch*. Bunch is a dictionary
+  that supports attribute-style access.
+
+
+=============
 Version 0.2.6
 =============
 
@@ -80,7 +96,7 @@ Version 0.2.1
 
 
 =============
-Version 0.2.1
+Version 0.2.0
 =============
 
 2013-06-23

@@ -5,10 +5,11 @@ import sys
 import traceback
 import uuid
 import rpcerror
+from bunch import Bunch
 from rpcjson import json, JsonParseError
 
 
-class Request(dict):
+class Request(Bunch):
     """
     JSON-RPC-Request
     """
@@ -20,14 +21,7 @@ class Request(dict):
         id = None,
         params = None
     ):
-        dict.__init__(
-            self,
-            jsonrpc = jsonrpc,
-            method = method,
-            id = id,
-            params = params
-        )
-
+        Bunch.__init__(self)
         self.jsonrpc = jsonrpc
         self.method = method
         self.id = id

@@ -47,8 +47,8 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 2",
     ],
-    install_requires = [
-        # "distribute",
-    ],
+    # install_requires = [
+    #     "bunch",
+    # ],
 )
 

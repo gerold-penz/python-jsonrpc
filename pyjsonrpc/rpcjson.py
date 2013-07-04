@@ -5,6 +5,10 @@ try:
     import jsonlib2 as json
     JsonParseError = json.ReadError
 except ImportError:
-    import json
-    JsonParseError = ValueError
+    try:
+        import simplejson as json
+        JsonParseError = json.JSONDecodeError
+    except ImportError:
+        import json
+        JsonParseError = ValueError
 

@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+from bunch import Bunch
 from rpcjson import json
 
 
-class Response(dict):
+class Response(Bunch):
     """
     Represents a JSON-RPC-response.
     """
 
-    class Error(dict):
+    class Error(Bunch):
 
         def __init__(self, code, message, data):
             """
@@ -18,7 +19,7 @@ class Response(dict):
             :param data: Additional error informations
             """
 
-            dict.__init__(self, code = code, message = message, data = data)
+            Bunch.__init__(self)
             self.code = code
             self.message = message
             self.data = data
@@ -40,18 +41,11 @@ class Response(dict):
         :param result: Result data
         """
 
+        Bunch.__init__(self)
         self.jsonrpc = jsonrpc
         self.id = id
         self.result = result if not error else None
         self.error = error
-
-        dict.__init__(
-            self,
-            jsonrpc = jsonrpc,
-            id = id,
-            result = result,
-            error = self.error
-        )
 
 
     def to_dict(self):

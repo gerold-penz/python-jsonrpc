@@ -3,7 +3,15 @@ Python JSON-RPC Library Client Server
 #####################################
 
 
-**Library Usage Example**:
+**Install:**
+
+::
+
+    pip install bunch
+    pip install python-jsonrpc
+
+
+**Library Usage Example:**
 
 .. code:: python
 
@@ -39,7 +47,7 @@ Python JSON-RPC Library Client Server
         print "Result:", response.result
 
 
-**HTTP Client Example**:
+**HTTP Client Example:**
 
 .. code:: python
 
