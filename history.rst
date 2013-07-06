@@ -6,6 +6,15 @@ by Gerold Penz 2013
 
 
 =============
+Version 0.3.2
+=============
+
+2013-07-06
+
+- Tests with BaseHTTPServer
+
+
+=============
 Version 0.3.1
 =============
 
