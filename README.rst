@@ -81,10 +81,10 @@ Python JSON-RPC Library Client Server
 
     class MyJsonRpcHandler(pyjsonrpc.HttpRequestHandler):
 
-        # Public JSON-RPC methods
-        methods = dict(
-            add = add
-        )
+        # Register public JSON-RPC methods
+        methods = {
+            "add": add
+        }
 
     # Threading HTTP-Server
     http_server = pyjsonrpc.ThreadingHttpServer(

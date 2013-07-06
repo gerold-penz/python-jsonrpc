@@ -18,9 +18,9 @@ def add(a, b):
     return a + b
 
 
-class MyJsonRpcHandler(pyjsonrpc.HttpRequestHandler):
+class RequestHandler(pyjsonrpc.HttpRequestHandler):
 
-    # Public JSON-RPC methods
+    # Register public JSON-RPC methods
     methods = dict(
         add = add
     )
@@ -29,8 +29,12 @@ class MyJsonRpcHandler(pyjsonrpc.HttpRequestHandler):
 # Threading HTTP-Server
 http_server = pyjsonrpc.ThreadingHttpServer(
     server_address = ('localhost', 8080),
-    RequestHandlerClass = MyJsonRpcHandler
+    RequestHandlerClass = RequestHandler
 )
-print "Serving HTTP"
+print "Starting HTTP server ..."
 print "URL: http://localhost:8080"
-http_server.serve_forever()
+try:
+    http_server.serve_forever()
+except KeyboardInterrupt:
+    http_server.shutdown()
+print "Stopping HTTP server ..."
