@@ -13,6 +13,14 @@ Version 0.3.2
 
 - Tests with BaseHTTPServer
 
+- Moved *JsonRpc*-class from *__init__.py* to *rpclib.py*.
+
+- *ThreadingHttpServer* created
+
+- *HttpRequestHandler* created
+
+- The Method *do_GET* handles HTTP-GET requests (POST requests not handled yet)
+
 
 =============
 Version 0.3.1
