@@ -68,3 +68,8 @@ Python JSON-RPC Library Client Server
     print http_client.add(1, 2)
     # Result: 3
 
+**Licenses:**
+
+    - GNU Library or Lesser General Public License (LGPL)
+    - MIT License 
+
