@@ -21,6 +21,8 @@ Version 0.3.2
 
 - The Method *do_GET* handles HTTP-GET requests (POST requests not handled yet)
 
+- Created HTTP server example
+
 
 =============
 Version 0.3.1

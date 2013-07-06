@@ -68,6 +68,34 @@ Python JSON-RPC Library Client Server
     print http_client.add(1, 2)
     # Result: 3
 
+
+**HTTP Server Example:**
+
+.. code:: python
+
+    import pyjsonrpc
+
+    def add(a, b):
+        """Test function"""
+        return a + b
+
+    class MyJsonRpcHandler(pyjsonrpc.HttpRequestHandler):
+
+        # Public JSON-RPC methods
+        methods = dict(
+            add = add
+        )
+
+    # Threading HTTP-Server
+    http_server = pyjsonrpc.ThreadingHttpServer(
+        server_address = ('localhost', 8080),
+        RequestHandlerClass = MyJsonRpcHandler
+    )
+    print "Serving HTTP"
+    print "URL: http://localhost:8080"
+    http_server.serve_forever()
+
+
 **Licenses:**
 
 - GNU Library or Lesser General Public License (LGPL)

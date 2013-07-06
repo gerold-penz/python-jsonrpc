@@ -20,15 +20,17 @@ def add(a, b):
 
 class MyJsonRpcHandler(pyjsonrpc.HttpRequestHandler):
 
-    methods = {
-        "add": add
-    }
+    # Public JSON-RPC methods
+    methods = dict(
+        add = add
+    )
 
 
-httpd = pyjsonrpc.ThreadingHttpServer(
-    server_address = ('localhost', 8181),
+# Threading HTTP-Server
+http_server = pyjsonrpc.ThreadingHttpServer(
+    server_address = ('localhost', 8080),
     RequestHandlerClass = MyJsonRpcHandler
 )
-print "Serving HTTP..."
-httpd.serve_forever()
-
+print "Serving HTTP"
+print "URL: http://localhost:8080"
+http_server.serve_forever()

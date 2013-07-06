@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+from rpcjson import json
 from rpcrequest import (
     parse_request_json,
     create_request_json,
