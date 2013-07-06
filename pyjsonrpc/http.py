@@ -105,6 +105,14 @@ class HttpClient(object):
             return response.result
 
 
+    def __call__(self, method, *args, **kwargs):
+        """
+        Redirects the direct call to *self.call*
+        """
+
+        return self.call(method, *args, **kwargs)
+
+
     def __getattr__(self, method):
         """
         Allows the usage of attributes as *method* names.

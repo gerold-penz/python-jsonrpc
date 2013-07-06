@@ -17,6 +17,9 @@ rpc_client = pyjsonrpc.HttpClient(url = "http://localhost:8080")
 # Example with *call*
 print rpc_client.call("hello", u"Gerold from Österreich")
 
+# Example with direct *call*
+print rpc_client("hello", u"Gerold from Österreich")
+
 # Example with *attribute* name
 print rpc_client.hello(u"Gerold from Österreich")
 

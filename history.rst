@@ -6,6 +6,16 @@ by Gerold Penz 2013
 
 
 =============
+Version 0.3.1
+=============
+
+2013-07-06
+
+- Small new feature in HttpClient: Class instance calls will be redirected to
+  *self.call*. Now this is possible: ``http_client("add", 1, 2)``.
+
+
+=============
 Version 0.3.0
 =============
 
