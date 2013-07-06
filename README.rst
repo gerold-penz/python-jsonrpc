@@ -3,6 +3,10 @@ Python JSON-RPC Library Client Server
 #####################################
 
 
+Attention! The HTTP server is in development. 
+POST requests are not possible now. Try it again tomorrow.
+
+
 **Install:**
 
 ::
