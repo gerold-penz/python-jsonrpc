@@ -70,6 +70,6 @@ Python JSON-RPC Library Client Server
 
 **Licenses:**
 
-    - GNU Library or Lesser General Public License (LGPL)
-    - MIT License 
+- GNU Library or Lesser General Public License (LGPL)
+- MIT License 
 
