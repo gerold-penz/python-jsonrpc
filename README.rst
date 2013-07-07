@@ -81,6 +81,9 @@ HTTP Server Example
 
 .. code:: python
 
+    #!/usr/bin/env python
+    # coding: utf-8
+
     import pyjsonrpc
 
     def add(a, b):
@@ -109,6 +112,9 @@ CGI Example
 ===========
 
 .. code:: python
+
+    #!/usr/bin/env python
+    # coding: utf-8
 
     import pyjsonrpc
 
