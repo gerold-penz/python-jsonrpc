@@ -213,3 +213,23 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
         self.end_headers()
         self.wfile.write(response_json)
 
+
+    def do_POST(self):
+        """
+        Handles HTTP-POST-Request
+        """
+
+        # Read JSON request
+        content_length = int(self.headers.get("Content-Length", 0))
+        request_json = self.rfile.read(content_length)
+
+        # Call
+        response_json = self.call(request_json)
+
+        # Return result
+        self.send_response(code = httplib.OK)
+        self.set_content_type_json()
+        self.set_content_length(len(response_json))
+        self.end_headers()
+        self.wfile.write(response_json)
+        return

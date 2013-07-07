@@ -6,6 +6,19 @@ by Gerold Penz 2013
 
 
 =============
+Version 0.3.3
+=============
+
+2013-07-07
+
+- Better HTTP server example
+
+- Deleted the *rpcjson.json* import from *__init__.py*.
+
+- The Method *do_POST* handles HTTP-POST requests
+
+
+=============
 Version 0.3.2
 =============
 
@@ -19,7 +32,7 @@ Version 0.3.2
 
 - *HttpRequestHandler* created
 
-- The Method *do_GET* handles HTTP-GET requests (POST requests not handled yet)
+- The Method *do_GET* handles HTTP-GET requests
 
 - Created HTTP server example
 

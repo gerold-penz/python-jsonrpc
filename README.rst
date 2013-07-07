@@ -3,11 +3,9 @@ Python JSON-RPC Library Client Server
 #####################################
 
 
-Attention! The HTTP server is in development. 
-POST requests are not possible now. Try it again tomorrow.
-
-
-**Install:**
+============
+Installation
+============
 
 ::
 
@@ -15,7 +13,9 @@ POST requests are not possible now. Try it again tomorrow.
     pip install python-jsonrpc
 
 
-**Library Usage Example:**
+=====================
+Library Usage Example
+=====================
 
 .. code:: python
 
@@ -51,7 +51,9 @@ POST requests are not possible now. Try it again tomorrow.
         print "Result:", response.result
 
 
-**HTTP Client Example:**
+===================
+HTTP Client Example
+===================
 
 .. code:: python
 
@@ -73,7 +75,9 @@ POST requests are not possible now. Try it again tomorrow.
     # Result: 3
 
 
-**HTTP Server Example:**
+===================
+HTTP Server Example
+===================
 
 .. code:: python
 
@@ -83,7 +87,7 @@ POST requests are not possible now. Try it again tomorrow.
         """Test function"""
         return a + b
 
-    class MyJsonRpcHandler(pyjsonrpc.HttpRequestHandler):
+    class RequestHandler(pyjsonrpc.HttpRequestHandler):
 
         # Register public JSON-RPC methods
         methods = {
@@ -93,14 +97,16 @@ POST requests are not possible now. Try it again tomorrow.
     # Threading HTTP-Server
     http_server = pyjsonrpc.ThreadingHttpServer(
         server_address = ('localhost', 8080),
-        RequestHandlerClass = MyJsonRpcHandler
+        RequestHandlerClass = RequestHandler
     )
-    print "Serving HTTP"
+    print "Starting HTTP server ..."
     print "URL: http://localhost:8080"
     http_server.serve_forever()
 
 
-**Licenses:**
+========
+Licenses
+========
 
 - GNU Library or Lesser General Public License (LGPL)
 - MIT License 
