@@ -233,3 +233,38 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
         self.end_headers()
         self.wfile.write(response_json)
         return
+
+
+def handle_cgi_request(methods = None):
+    """
+    Gets the JSON-RPC request from CGI environment and returns the
+    result to STDOUT
+    """
+
+    import cgi
+    import cgitb
+    cgitb.enable()
+
+    # Fetch data from CGI environment
+    fields = cgi.FieldStorage()
+
+
+
+
+
+
+
+    # Call RPC method
+    rpc = rpclib.JsonRpc(methods = methods)
+    #rpc.call(request_json)
+
+
+    # Header
+    print "Content-Type: application/json"
+    print
+
+    # Result
+
+
+
+

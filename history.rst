@@ -6,6 +6,15 @@ by Gerold Penz 2013
 
 
 =============
+Version 0.3.4
+=============
+
+2013-07-07
+
+- Tests with CGI reqeusts
+
+
+=============
 Version 0.3.3
 =============
 

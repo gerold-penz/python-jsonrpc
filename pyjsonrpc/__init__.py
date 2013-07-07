@@ -13,7 +13,8 @@ from rpcresponse import (
 from http import (
     HttpClient,
     ThreadingHttpServer,
-    HttpRequestHandler
+    HttpRequestHandler,
+    handle_cgi_request
 )
 from rpcerror import (
     InternalError,
