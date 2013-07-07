@@ -26,6 +26,10 @@ Version 0.3.3
 
 - The Method *do_POST* handles HTTP-POST requests
 
+- CGI handler created
+
+- CGI example created
+
 
 =============
 Version 0.3.2

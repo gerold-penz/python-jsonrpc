@@ -104,6 +104,22 @@ HTTP Server Example
     http_server.serve_forever()
 
 
+===========
+CGI Example
+===========
+
+.. code:: python
+
+    import pyjsonrpc
+
+    def add(a, b):
+        """Test function"""
+        return a + b
+
+    # Handles the JSON-RPC request and gets back the result to STDOUT
+    pyjsonrpc.handle_cgi_request(methods = dict(add = add))
+
+
 ========
 Licenses
 ========

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+import sys
 import urllib2
 import base64
 import BaseHTTPServer
@@ -147,15 +148,24 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
 
     def set_content_type_json(self):
         """
-        Setzt den Content-Type-Header auf "application/json"
+        Set content-type to "application/json"
         """
 
         self.send_header("Content-Type", "application/json")
 
 
+    def set_no_cache(self):
+        """
+        Disable caching
+        """
+
+        self.send_header("Cache-Control", "no-cache")
+        self.send_header("Pragma", "no-cache")
+
+
     def set_content_length(self, length):
         """
-        Setzt den Content-Lenght-Header
+        Set content-length-header
         """
 
         self.send_header("Content-Length", str(length))
@@ -209,6 +219,7 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
         # Return result
         self.send_response(code = httplib.OK)
         self.set_content_type_json()
+        self.set_no_cache()
         self.set_content_length(len(response_json))
         self.end_headers()
         self.wfile.write(response_json)
@@ -229,6 +240,7 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
         # Return result
         self.send_response(code = httplib.OK)
         self.set_content_type_json()
+        self.set_no_cache()
         self.set_content_length(len(response_json))
         self.end_headers()
         self.wfile.write(response_json)
@@ -245,26 +257,44 @@ def handle_cgi_request(methods = None):
     import cgitb
     cgitb.enable()
 
-    # Fetch data from CGI environment
-    fields = cgi.FieldStorage()
+    # get response-body
+    request_json = sys.stdin.read()
+    if request_json:
+        # POST
+        request_json = urlparse.unquote(request_json)
+    else:
+        # GET
+        args = []
+        kwargs = {}
+        fields = cgi.FieldStorage()
+        jsonrpc = fields.getfirst("jsonrpc")
+        id = fields.getfirst("id")
+        method = fields.getfirst("method")
+        params = fields.getfirst("params")
+        if params:
+            params = json.loads(params)
+            if isinstance(params, list):
+                args = params
+                kwargs = {}
+            elif isinstance(params, dict):
+                args = []
+                kwargs = params
 
+        # Create JSON reqeust string
+        request_dict = rpcrequest.create_request_dict(method, *args, **kwargs)
+        request_dict["jsonrpc"] = jsonrpc
+        request_dict["id"] = id
+        request_json = json.dumps(request_dict)
 
+    # Call
+    response_json = rpclib.JsonRpc(methods = methods).call(request_json)
 
-
-
-
-
-    # Call RPC method
-    rpc = rpclib.JsonRpc(methods = methods)
-    #rpc.call(request_json)
-
-
-    # Header
+    # Return headers
     print "Content-Type: application/json"
+    print "Cache-Control: no-cache"
+    print "Pragma: no-cache"
     print
 
-    # Result
-
-
-
+    # Return result
+    print response_json
 
