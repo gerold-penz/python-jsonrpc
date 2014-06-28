@@ -12,8 +12,12 @@ sys.path.insert(0, APPDIR)
 
 import pyjsonrpc
 
-rpc_client = pyjsonrpc.HttpClient(url = "http://localhost:8080")
+rpc_client = pyjsonrpc.HttpClient(url = "http://localhost:8181")
 
-# Example with *call_event*
-rpc_client.call_no_wait("add", 1, 2)
+# Example with *call*
+print repr(rpc_client.call("add", 1, 2))
+
+
+# Example with *notify*
+print repr(rpc_client.notify("add", 1, 2))
 

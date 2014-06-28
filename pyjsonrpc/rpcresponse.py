@@ -105,6 +105,9 @@ def parse_response_json(json_string):
     Returns a RPC-Response or a list with RPC-Responses
     """
 
+    if not json_string:
+        return
+
     data = json.loads(json_string)
 
     if isinstance(data, list):

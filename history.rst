@@ -6,7 +6,18 @@ by Gerold Penz 2013-2014
 
 
 =============
-Version 0.3.4
+Version 0.3.6
+=============
+
+2014-06-28
+
+- It is now possible to send multiple calls in one request.
+
+- *multiple_example.py* added.
+
+
+=============
+Version 0.3.5
 =============
 
 2014-06-28

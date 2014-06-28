@@ -87,8 +87,8 @@ class HttpClient(object):
         if isinstance(method, basestring):
             request_json = rpcrequest.create_request_json(method, *args, **kwargs)
         else:
-            request_json = json.dumps(method)
             assert not args and not kwargs
+            request_json = json.dumps(method)
 
         # Call the HTTP-JSON-RPC server
         response_json = http_request(
@@ -97,19 +97,24 @@ class HttpClient(object):
             username = self.username,
             password = self.password
         )
+        if not response_json:
+            return
 
         # Convert JSON-RPC-response to python-object
         response = rpcresponse.parse_response_json(response_json)
-
-        if response.error:
-            # Raise error
-            raise rpcerror.jsonrpcerrors[response.error.code](
-                message = response.error.message,
-                data = response.error.data
-            )
-        else:
-            # Return result
-            return response.result
+        if isinstance(response, rpcresponse.Response):
+            if response.error:
+                # Raise error
+                raise rpcerror.jsonrpcerrors[response.error.code](
+                    message = response.error.message,
+                    data = response.error.data
+                )
+            else:
+                # Return result
+                return response.result
+        elif isinstance(response, list):
+            # Bei Listen wird keine Fehlerauswerung gemacht
+            return response
 
 
     def notify(self, method, *args, **kwargs):
@@ -119,18 +124,24 @@ class HttpClient(object):
         A notification is a special request which does not have a response.
         """
 
+        methods = []
+
         # Create JSON-RPC-request
         if isinstance(method, basestring):
-            request_json = rpcrequest.create_request_json(method, *args, **kwargs)
-            request_json.id = None
+            request_dict = rpcrequest.create_request_dict(method, *args, **kwargs)
+            request_dict["id"] = None
+            methods.append(request_dict)
         else:
-            for request in method:
-                request["id"] = None
-            request_json = json.dumps(method)
             assert not args and not kwargs
+            for request_dict in method:
+                request_dict["id"] = None
+                methods.append(request_dict)
+
+        # Redirect to call-method
+        self.call(methods)
 
         # Fertig
-        return self.call(method)
+        return
 
 
     def __call__(self, method, *args, **kwargs):
@@ -234,7 +245,7 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
         request_json = json.dumps(request_dict)
 
         # Call
-        response_json = self.call(request_json)
+        response_json = self.call(request_json) or ""
 
         # Return result
         self.send_response(code = httplib.OK)
@@ -255,7 +266,7 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
         request_json = self.rfile.read(content_length)
 
         # Call
-        response_json = self.call(request_json)
+        response_json = self.call(request_json) or ""
 
         # Return result
         self.send_response(code = httplib.OK)

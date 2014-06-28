@@ -128,10 +128,11 @@ class JsonRpc(object):
                     )
                 )
 
-        # Convert responses to dictionaries
+        # Convert responses to dictionaries and filter it
         responses_ = []
         for response in responses:
-            responses_.append(response.to_dict())
+            if response.id:
+                responses_.append(response.to_dict())
         responses = responses_
 
         # Return as JSON-string (batch or normal)

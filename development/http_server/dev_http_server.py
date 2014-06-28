@@ -15,6 +15,8 @@ import pyjsonrpc
 
 def add(a, b):
     """Test function"""
+
+    print "Function called with these arguments: {a} {b}".format(a = a, b = b)
     return a + b
 
 
@@ -26,7 +28,7 @@ class MyJsonRpcHandler(pyjsonrpc.HttpRequestHandler):
 
 
 httpd = pyjsonrpc.ThreadingHttpServer(
-    server_address = ('localhost', 8181),
+    server_address = ('localhost', 8080),
     RequestHandlerClass = MyJsonRpcHandler
 )
 print "Serving HTTP..."
