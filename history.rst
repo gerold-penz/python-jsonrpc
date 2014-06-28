@@ -13,6 +13,9 @@ Version 0.3.4
 
 - Bunch is now a setup-dependency.
 
+- The new method *HttpClient.notify* sends notifications to the server,
+  without `id` as parameter.
+
 
 =============
 Version 0.3.4

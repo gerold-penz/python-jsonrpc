@@ -135,12 +135,11 @@ class JsonRpc(object):
         responses = responses_
 
         # Return as JSON-string (batch or normal)
-        if len(requests) == 1:
-            return json.dumps(responses[0])
-        elif len(requests) > 1:
-            return json.dumps(responses)
-        else:
-            return None
+        if responses:
+            if len(requests) == 1:
+                return json.dumps(responses[0])
+            elif len(requests) > 1:
+                return json.dumps(responses)
 
 
     def __call__(self, json_request):

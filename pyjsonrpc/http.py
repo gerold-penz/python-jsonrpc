@@ -112,6 +112,27 @@ class HttpClient(object):
             return response.result
 
 
+    def notify(self, method, *args, **kwargs):
+        """
+        Sends a notification or multiple notifications to the server.
+
+        A notification is a special request which does not have a response.
+        """
+
+        # Create JSON-RPC-request
+        if isinstance(method, basestring):
+            request_json = rpcrequest.create_request_json(method, *args, **kwargs)
+            request_json.id = None
+        else:
+            for request in method:
+                request["id"] = None
+            request_json = json.dumps(method)
+            assert not args and not kwargs
+
+        # Fertig
+        return self.call(method)
+
+
     def __call__(self, method, *args, **kwargs):
         """
         Redirects the direct call to *self.call*
@@ -143,7 +164,6 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
     """
 
     protocol_version = "HTTP/1.1"
-    #server_version = "BaseHTTP/" + __version__
 
 
     def set_content_type_json(self):
