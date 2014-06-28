@@ -32,9 +32,6 @@ setup(
     url = HOMEPAGE,
     download_url = DOWNLOAD_URL,
     packages = find_packages(),
-    # data_files = [
-    #     ["./yyy", ["_git_add.py"]],
-    # ],
     classifiers = [
         #"Development Status :: 1 - Planning",
         # "Development Status :: 2 - Pre-Alpha",
@@ -47,8 +44,6 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 2",
     ],
-    # install_requires = [
-    #     "bunch",
-    # ],
+    install_requires = ["bunch"],
 )
 

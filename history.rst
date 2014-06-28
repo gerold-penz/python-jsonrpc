@@ -2,7 +2,16 @@
 Python JSON-RPC Library Client Server
 #####################################
 
-by Gerold Penz 2013
+by Gerold Penz 2013-2014
+
+
+=============
+Version 0.3.4
+=============
+
+2014-06-28
+
+- Bunch is now a setup-dependency.
 
 
 =============
