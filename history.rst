@@ -6,6 +6,19 @@ by Gerold Penz 2013-2014
 
 
 =============
+Version 0.4.1
+=============
+
+2014-08-19
+
+- HttpClient: The new timeout parameter specifies a timeout in seconds for
+  blocking operations like the connection attempt (if not specified,
+  the global default timeout setting will be used). Thanks *geerk* :-)
+
+  See: https://github.com/gerold-penz/python-jsonrpc/pull/6
+
+
+=============
 Version 0.4.0
 =============
 

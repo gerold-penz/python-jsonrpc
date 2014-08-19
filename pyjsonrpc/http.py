@@ -16,21 +16,27 @@ import rpclib
 from rpcjson import json
 
 
-def http_request(url, json_string, username = None, password = None):
+def http_request(url, json_string, username = None, password = None, timeout = None):
     """
     Fetch data from webserver (POST request)
 
     :param json_string: JSON-String
+
     :param username: If *username* is given, BASE authentication will be used.
+
+    :param timeout: Specifies a timeout in seconds for blocking operations
+        like the connection attempt (if not specified, the global default
+        timeout setting will be used).
+        See: https://github.com/gerold-penz/python-jsonrpc/pull/6
     """
 
     request = urllib2.Request(url, data = json_string)
     request.add_header("Content-Type", "application/json")
     if username:
-        base64string = base64.encodestring('%s:%s' % (username, password))[:-1]
+        base64string = base64.encodestring("%s:%s" % (username, password))[:-1]
         request.add_header("Authorization", "Basic %s" % base64string)
 
-    response = urllib2.urlopen(request)
+    response = urllib2.urlopen(request, timeout = timeout)
     response_string = response.read()
     response.close()
 
@@ -54,19 +60,26 @@ class HttpClient(object):
         self,
         url,
         username = None,
-        password = None
+        password = None,
+        timeout = None
     ):
         """
         :param: URL to the JSON-RPC handler on the HTTP-Server.
             Example: ``"https://example.com/jsonrpc"``
 
         :param username: If *username* is given, BASE authentication will be used.
+
         :param password: Password for BASE authentication.
+
+        :param timeout: Specifies a timeout in seconds for blocking operations
+            like the connection attempt (if not specified, the global default
+            timeout setting will be used).
         """
 
         self.url = url
         self.username = username
         self.password = password
+        self.timeout = timeout
 
 
     def call(self, method, *args, **kwargs):
@@ -95,7 +108,8 @@ class HttpClient(object):
             url = self.url,
             json_string = request_json,
             username = self.username,
-            password = self.password
+            password = self.password,
+            timeout = self.timeout
         )
         if not response_json:
             return
