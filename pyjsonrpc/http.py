@@ -85,7 +85,9 @@ class HttpClient(object):
         url,
         username = None,
         password = None,
-        timeout = None
+        timeout = None,
+        additional_headers = None,
+        content_type = None
     ):
         """
         :param: URL to the JSON-RPC handler on the HTTP-Server.
@@ -98,12 +100,19 @@ class HttpClient(object):
         :param timeout: Specifies a timeout in seconds for blocking operations
             like the connection attempt (if not specified, the global default
             timeout setting will be used).
+
+        :param additional_headers: Dictionary with additional headers
+            See: https://github.com/gerold-penz/python-jsonrpc/issues/5
+
+        :param content_type: Posibility to change the content-type header.
         """
 
         self.url = url
         self.username = username
         self.password = password
         self.timeout = timeout
+        self.additional_headers = additional_headers
+        self.content_type = content_type
 
 
     def call(self, method, *args, **kwargs):
@@ -133,7 +142,9 @@ class HttpClient(object):
             json_string = request_json,
             username = self.username,
             password = self.password,
-            timeout = self.timeout
+            timeout = self.timeout,
+            additional_headers = self.additional_headers,
+            content_type = self.content_type
         )
         if not response_json:
             return
