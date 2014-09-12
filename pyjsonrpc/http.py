@@ -13,6 +13,7 @@ import rpcrequest
 import rpcresponse
 import rpcerror
 import rpclib
+import Cookie
 from rpcjson import json
 
 
@@ -23,7 +24,8 @@ def http_request(
     password = None,
     timeout = None,
     additional_headers = None,
-    content_type = None
+    content_type = None,
+    cookies = None
 ):
     """
     Fetch data from webserver (POST request)
@@ -41,6 +43,10 @@ def http_request(
         See: https://github.com/gerold-penz/python-jsonrpc/issues/5
 
     :param content_type: Possibility to change the content-type header.
+
+    :param cookies: Possibility to add simple cookie-items as key-value pairs.
+        The key and the value of each cookie-item must be a bytestring.
+        Unicode is not allowed here.
     """
 
     request = urllib2.Request(url, data = json_string)
@@ -53,7 +59,12 @@ def http_request(
         base64string = base64.encodestring("%s:%s" % (username, password))[:-1]
         request.add_header("Authorization", "Basic %s" % base64string)
 
-    # Additional headers
+    # Cookies
+    if cookies:
+        cookie = Cookie.SimpleCookie(cookies)
+        request.add_header("Cookie", cookie.output(header = "", sep = ";"))
+
+    # Additional headers (overrides other headers)
     if additional_headers:
         for key, val in additional_headers.items():
             request.add_header(key, val)
@@ -87,7 +98,8 @@ class HttpClient(object):
         password = None,
         timeout = None,
         additional_headers = None,
-        content_type = None
+        content_type = None,
+        cookies = None
     ):
         """
         :param: URL to the JSON-RPC handler on the HTTP-Server.
@@ -105,6 +117,10 @@ class HttpClient(object):
             See: https://github.com/gerold-penz/python-jsonrpc/issues/5
 
         :param content_type: Possibility to change the content-type header.
+
+        :param cookies: Possibility to add simple cookie-items as key-value pairs.
+            The key and the value of each cookie-item must be a bytestring.
+            Unicode is not allowed here.
         """
 
         self.url = url
@@ -113,6 +129,7 @@ class HttpClient(object):
         self.timeout = timeout
         self.additional_headers = additional_headers
         self.content_type = content_type
+        self.cookies = cookies
 
 
     def call(self, method, *args, **kwargs):
@@ -144,7 +161,8 @@ class HttpClient(object):
             password = self.password,
             timeout = self.timeout,
             additional_headers = self.additional_headers,
-            content_type = self.content_type
+            content_type = self.content_type,
+            cookies = self.cookies
         )
         if not response_json:
             return

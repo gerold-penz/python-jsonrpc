@@ -6,6 +6,16 @@ by Gerold Penz 2013-2014
 
 
 =============
+Version 0.4.3
+=============
+
+2014-09-12
+
+- HttpClient: *cookies*-parameter added. Now, it is possible to add
+  simple cookie-items.
+
+
+=============
 Version 0.4.2
 =============
 

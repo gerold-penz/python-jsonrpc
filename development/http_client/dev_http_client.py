@@ -14,7 +14,7 @@ import pyjsonrpc
 
 rpc_client = pyjsonrpc.HttpClient(
     url = "http://localhost:8080",
-    timeout = 2
+    cookies = {"aa": "AA AA", "bb": "BB"}
 )
 
 # Example with *call*

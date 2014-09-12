@@ -2,7 +2,6 @@
 
 import os
 import sys
-import shutil
 import subprocess
 
 THISDIR = os.path.dirname(os.path.abspath(__file__))
