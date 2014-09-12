@@ -21,3 +21,6 @@ def add(a, b):
 # Handles the JSON-RPC request and gets back the result to STDOUT
 pyjsonrpc.handle_cgi_request(methods = dict(add = add))
 
+
+# URL to test this script:
+# http://localhost:8080/simple_example.py?method=add&id=1&jsonrpc=2.0&params=[2,3]

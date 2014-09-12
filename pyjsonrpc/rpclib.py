@@ -9,10 +9,26 @@ import rpcerror
 from rpcjson import json
 
 
+def rpcmethod(func):
+    """
+    Decorator
+    Sign the decorated method as JSON-RPC-Method
+    """
+
+    # Sign the function as JSON-RPC-Method
+    func.rpcmethod = True
+
+    # Return the function itself
+    return func
+
+
 class JsonRpc(object):
     """
     JSON-RPC
     """
+
+    methods = {}
+
 
     def __init__(self, methods = None):
         """
@@ -27,8 +43,8 @@ class JsonRpc(object):
                 }
         """
 
-        self.methods = methods or {}
-        self.methods["system.describe"] = self.system_describe
+        if methods:
+            self.methods.update(methods)
 
 
     def call(self, json_request):
@@ -56,6 +72,17 @@ class JsonRpc(object):
             jsonrpc = request.jsonrpc
             id = request.id
             method = request.get("method", "")
+
+            if not method in self.methods:
+                # Check if requested method is signed as *rpcmethod*
+                _method = getattr(self, method, None)
+                if (
+                    _method and
+                    callable(_method) and
+                    getattr(_method, "rpcmethod", False)
+                ):
+                    self.methods[method] = _method
+
             if not method in self.methods:
                 # Method not found error
                 responses.append(
@@ -173,16 +200,4 @@ class JsonRpc(object):
         """
 
         del self.methods[key]
-
-
-    def system_describe(self):
-        """
-        Returns a system description
-
-        See: http://web.archive.org/web/20100718181845/http://json-rpc.org/wd/JSON-RPC-1-1-WD-20060807.html#ServiceDescription
-        """
-
-        # ToDo: not finished yet
-
-        return u"[not finished]"
 

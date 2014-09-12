@@ -13,20 +13,23 @@ sys.path.insert(0, APPDIR)
 import pyjsonrpc
 
 
-class MyJsonRpcHandler(pyjsonrpc.HttpRequestHandler):
+class RequestHandler(pyjsonrpc.HttpRequestHandler):
 
     @pyjsonrpc.rpcmethod
     def add(self, a, b):
-        """Test function"""
-
-        print "Function called with these arguments: {a} {b}".format(a = a, b = b)
+        """Test Method"""
         return a + b
 
 
-httpd = pyjsonrpc.ThreadingHttpServer(
+# Threading HTTP-Server
+http_server = pyjsonrpc.ThreadingHttpServer(
     server_address = ('localhost', 8080),
-    RequestHandlerClass = MyJsonRpcHandler
+    RequestHandlerClass = RequestHandler
 )
-print "Serving HTTP..."
-httpd.serve_forever()
-
+print "Starting HTTP server ..."
+print "URL: http://localhost:8080"
+try:
+    http_server.serve_forever()
+except KeyboardInterrupt:
+    http_server.shutdown()
+print "Stopping HTTP server ..."

@@ -12,20 +12,18 @@ sys.path.insert(0, APPDIR)
 
 import pyjsonrpc
 
-rpc_client = pyjsonrpc.HttpClient(url = "http://localhost:8080")
+rpc_client = pyjsonrpc.HttpClient("http://localhost:8080")
 
 # Example with *multiple calls* in one request
 methods = [
-    pyjsonrpc.create_request_dict("addxxxxx", 1, 2),  # ERROR
-    pyjsonrpc.create_request_dict("add", 3, 4),
-    pyjsonrpc.create_request_dict("add", 5, 6)
+    pyjsonrpc.create_request_dict("add", 1, 2),
+    pyjsonrpc.create_request_dict("add", 3, 4)
 ]
 print rpc_client.call(methods)
 
 # Example with *multiple notifications* (no response) in one request
 notifications = [
-    pyjsonrpc.create_request_dict("addxxxxx", 1, 2),  # ERROR
-    pyjsonrpc.create_request_dict("add", 3, 4),
-    pyjsonrpc.create_request_dict("add", 5, 6)
+    pyjsonrpc.create_request_dict("add", 1, 2),
+    pyjsonrpc.create_request_dict("add", 3, 4)
 ]
 rpc_client.notify(notifications)

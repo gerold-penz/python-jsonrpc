@@ -50,16 +50,14 @@ HTTP Server Example
 
     import pyjsonrpc
 
-    def add(a, b):
-        """Test function"""
-        return a + b
 
     class RequestHandler(pyjsonrpc.HttpRequestHandler):
 
-        # Register public JSON-RPC methods
-        methods = {
-            "add": add
-        }
+      @pyjsonrpc.rpcmethod
+      def add(self, a, b):
+          """Test method"""
+          return a + b
+
 
     # Threading HTTP-Server
     http_server = pyjsonrpc.ThreadingHttpServer(
@@ -102,13 +100,16 @@ Library Usage Example
     import pyjsonrpc
 
 
-    def add(a, b):
-        """Test function"""
-        return a + b
+    class JsonRpc(pyjsonrpc.JsonRpc):
+
+        @pyjsonrpc.rpcmethod
+        def add(self, a, b):
+            """Test function"""
+            return a + b
 
 
-    # 1. Initialize JSON-RPC class with JSON-RPC method(s)
-    rpc = pyjsonrpc.JsonRpc(methods = {"add": add})
+    # 1. Initialize JSON-RPC class
+    rpc = JsonRpc()
 
     # 2. Create JSON-RPC string with parameters (= request string)
     request_json = pyjsonrpc.create_request_json("add", 1, 2)

@@ -6,6 +6,20 @@ by Gerold Penz 2013-2014
 
 
 =============
+Version 0.5.0
+=============
+
+2014-09-12
+
+- The new decorator *@pyjsonrpc.rpcmethod* signs methods as JSON-RPC-Methods.
+
+- Examples with the new *rpcmethod*-decorator added.
+
+- I think, *python-jsonrpc* is stable enough to set the classifier to
+  "Development Status :: 5 - Production/Stable".
+
+
+=============
 Version 0.4.3
 =============
 

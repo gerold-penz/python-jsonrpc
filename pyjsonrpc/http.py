@@ -210,6 +210,9 @@ class HttpClient(object):
         # Fertig
         return
 
+    # for compatibility with jsonrpclib
+    _notify = notify
+
 
     def __call__(self, method, *args, **kwargs):
         """

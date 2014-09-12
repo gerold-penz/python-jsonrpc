@@ -12,6 +12,8 @@ from rpcresponse import (
 )
 from http import (
     HttpClient,
+    # for compatibility with simple-jsonrpc and jsonrpclib
+    HttpClient as Server,
     ThreadingHttpServer,
     HttpRequestHandler,
     handle_cgi_request
@@ -24,5 +26,9 @@ from rpcerror import (
     MethodNotFound,
     ParseError
 )
-from rpclib import JsonRpc
+from rpclib import (
+    JsonRpc,
+    rpcmethod
+)
+
 
