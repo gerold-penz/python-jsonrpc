@@ -17,7 +17,7 @@ class JsonRpc(pyjsonrpc.JsonRpc):
 
     @pyjsonrpc.rpcmethod
     def add(self, a, b):
-        """Test function"""
+        """Test method"""
         return a + b
 
 
