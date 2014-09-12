@@ -16,7 +16,15 @@ import rpclib
 from rpcjson import json
 
 
-def http_request(url, json_string, username = None, password = None, timeout = None):
+def http_request(
+    url,
+    json_string,
+    username = None,
+    password = None,
+    timeout = None,
+    additional_headers = None,
+    content_type = None
+):
     """
     Fetch data from webserver (POST request)
 
@@ -28,18 +36,34 @@ def http_request(url, json_string, username = None, password = None, timeout = N
         like the connection attempt (if not specified, the global default
         timeout setting will be used).
         See: https://github.com/gerold-penz/python-jsonrpc/pull/6
+
+    :param additional_headers: Dictionary with additional headers
+        See: https://github.com/gerold-penz/python-jsonrpc/issues/5
+
+    :param content_type: Posibility to change the content-type header.
     """
 
     request = urllib2.Request(url, data = json_string)
-    request.add_header("Content-Type", "application/json")
+
+    # Content-Type
+    request.add_header("Content-Type", content_type or "application/json")
+
+    # Authorization
     if username:
         base64string = base64.encodestring("%s:%s" % (username, password))[:-1]
         request.add_header("Authorization", "Basic %s" % base64string)
 
+    # Additional headers
+    if additional_headers:
+        for key, val in additional_headers.items():
+            request.add_header(key, val)
+
+    # Request
     response = urllib2.urlopen(request, timeout = timeout)
     response_string = response.read()
     response.close()
 
+    # Finished
     return response_string
 
 
