@@ -26,7 +26,11 @@ setup(
         "Python JSON-RPC Client Server Library - Simple To Use Python JSONRPC-Library"
     ),
     long_description = open("README.rst").read(),
-    keywords = "JSON JSON-RPC Library Tool",
+    keywords = (
+        "JSONRPC, JSON-RPC, JSON, RPC, Client, Server, HTTP-Server, "
+        "HTTP-Client, CGI, Remote Procedure Call, "
+        "JavaScript Object Notation, Data Interchange"
+    ),
     author = "Gerold Penz",
     author_email = "gerold@halvar.at",
     url = HOMEPAGE,
@@ -38,11 +42,15 @@ setup(
         # "Development Status :: 3 - Alpha",
         # "Development Status :: 4 - Beta",
         "Development Status :: 5 - Production/Stable",
+        "Environment :: Web Environment",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 2",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+        "Topic :: System :: Networking",
+        "Topic :: Internet :: WWW/HTTP",
     ],
     install_requires = ["bunch"],
 )
