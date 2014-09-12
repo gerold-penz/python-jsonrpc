@@ -1,5 +1,5 @@
 #####################################
-Python JSON-RPC Library Client Server
+Python JSON-RPC Client Server Library
 #####################################
 
 

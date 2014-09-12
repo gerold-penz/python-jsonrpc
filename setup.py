@@ -23,7 +23,7 @@ setup(
     name = "python-jsonrpc",
     version = VERSION,
     description = (
-        "Python JSON-RPC Library Client Server - Simple To Use Python JSONRPC-Library"
+        "Python JSON-RPC Client Server Library - Simple To Use Python JSONRPC-Library"
     ),
     long_description = open("README.rst").read(),
     keywords = "JSON JSON-RPC Library Tool",

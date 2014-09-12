@@ -1,8 +1,17 @@
 #####################################
-Python JSON-RPC Library Client Server
+Python JSON-RPC Client Server Library
 #####################################
 
 by Gerold Penz 2013-2014
+
+
+=============
+Version 0.5.1
+=============
+
+2014-09-12
+
+- Descriptions
 
 
 =============
