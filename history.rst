@@ -12,8 +12,8 @@ Version 0.4.2
 2014-09-12
 
 - HttpClient: New parameters added:
-  - additional_headers: Posibility to add additional header items.
-  - content_type: Posibility to change the content-type header.
+  - additional_headers: Possibility to add additional header items.
+  - content_type: Possibility to change the content-type header.
 
 
 =============

@@ -40,7 +40,7 @@ def http_request(
     :param additional_headers: Dictionary with additional headers
         See: https://github.com/gerold-penz/python-jsonrpc/issues/5
 
-    :param content_type: Posibility to change the content-type header.
+    :param content_type: Possibility to change the content-type header.
     """
 
     request = urllib2.Request(url, data = json_string)
@@ -104,7 +104,7 @@ class HttpClient(object):
         :param additional_headers: Dictionary with additional headers
             See: https://github.com/gerold-penz/python-jsonrpc/issues/5
 
-        :param content_type: Posibility to change the content-type header.
+        :param content_type: Possibility to change the content-type header.
         """
 
         self.url = url
