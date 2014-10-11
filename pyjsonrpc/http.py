@@ -245,6 +245,15 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
     """
 
     protocol_version = "HTTP/1.1"
+    content_type = "application/json"
+
+
+    def set_content_type(self, content_type):
+        """
+        Set content-type to *content_type*
+        """
+
+        self.send_header("Content-Type", content_type)
 
 
     def set_content_type_json(self):
@@ -252,7 +261,7 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
         Set content-type to "application/json"
         """
 
-        self.send_header("Content-Type", "application/json")
+        self.set_content_type("application/json")
 
 
     def set_no_cache(self):
@@ -278,7 +287,13 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
         """
 
         # Parse URL query
-        query = urlparse.parse_qs(urllib.splitquery(self.path)[1])
+        path, query_str = urllib.splitquery(self.path)
+        if not query_str:
+            # Bad Request
+            return self.send_error(httplib.BAD_REQUEST)
+
+        # Parse querystring
+        query = urlparse.parse_qs(query_str)
 
         # jsonrpc
         jsonrpc = query.get("jsonrpc")
@@ -294,6 +309,9 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
         method = query.get("method")
         if method:
             method = method[0]
+        else:
+            # Bad Request
+            return self.send_error(httplib.BAD_REQUEST)
 
         # params
         args = []
@@ -319,7 +337,7 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
 
         # Return result
         self.send_response(code = httplib.OK)
-        self.set_content_type_json()
+        self.set_content_type(self.content_type)
         self.set_no_cache()
         self.set_content_length(len(response_json))
         self.end_headers()
@@ -340,7 +358,7 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
 
         # Return result
         self.send_response(code = httplib.OK)
-        self.set_content_type_json()
+        self.set_content_type(self.content_type)
         self.set_no_cache()
         self.set_content_length(len(response_json))
         self.end_headers()

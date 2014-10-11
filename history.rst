@@ -6,6 +6,24 @@ by Gerold Penz 2013-2014
 
 
 =============
+Version 0.5.2
+=============
+
+2014-10-11
+
+- HTTP-Server: The content-type is changable, now. Default content-type stays
+  "application/json". If you want to change the content-type::
+
+    class RequestHandler(pyjsonrpc.HttpRequestHandler):
+
+        content-type = "application/json-rpc"
+
+        ...
+
+- HTTP-Server GET-Request: Check if method name given
+
+
+=============
 Version 0.5.1
 =============
 
