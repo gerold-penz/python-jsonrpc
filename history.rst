@@ -6,6 +6,15 @@ by Gerold Penz 2013-2014
 
 
 =============
+Version 0.5.3
+=============
+
+2014-10-21
+
+- New Alias `ServiceMethod` added, for the *@pyjsonrpc.rpcmethod*-decorator.
+
+
+=============
 Version 0.5.2
 =============
 
