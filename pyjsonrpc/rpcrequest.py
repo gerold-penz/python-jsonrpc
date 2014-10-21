@@ -22,7 +22,8 @@ class Request(Bunch):
         params = None
     ):
         Bunch.__init__(self)
-        self.jsonrpc = jsonrpc
+
+        self.jsonrpc = jsonrpc or "2.0"
         self.method = method
         self.id = id
         self.params = params
@@ -37,7 +38,7 @@ class Request(Bunch):
 
         positional_params = []
         named_params = {}
-        params = self.get("params", [])
+        params = self.params or []
         if isinstance(params, list):
             positional_params = params
         elif isinstance(params, dict):
@@ -49,40 +50,83 @@ class Request(Bunch):
         return positional_params, named_params
 
 
-def parse_request_json(json_string):
-    """
-    Returns RPC-request as dictionary or as list with requests
-    """
+    @classmethod
+    def from_string(cls, json_string):
+        """
+        Parses the Json-string and returns a Request-object or a
+        list with Request-objects.
 
-    # No JSON-String
-    if json_string is None:
-        raise rpcerror.InvalidRequest()
+        :returns: Request-object or list with Request-objects
 
-    # Parse
-    try:
-        data = json.loads(json_string)
-    except JsonParseError:
-        traceback_info = "".join(traceback.format_exception(*sys.exc_info()))
-        raise rpcerror.ParseError(data = traceback_info)
+        :rtype: Request
+        """
 
-    # Create request(s)
-    if isinstance(data, list):
-        requests = []
-        for item in data:
-            requests.append(Request(
-                jsonrpc = item.get("jsonrpc"),
-                method = str(item.get("method", "")),
-                id = item.get("id"),
-                params = item.get("params", [])
-            ))
-        return requests
-    else:
-        return Request(
-            jsonrpc = data.get("jsonrpc"),
-            method = str(data.get("method", "")),
-            id = data.get("id"),
-            params = data.get("params", [])
-        )
+        # No JSON-String
+        if json_string is None:
+            raise rpcerror.InvalidRequest()
+
+        # Parse
+        try:
+            data = json.loads(json_string)
+        except JsonParseError:
+            traceback_info = "".join(traceback.format_exception(*sys.exc_info()))
+            raise rpcerror.ParseError(data = traceback_info)
+
+        # Create request(s)
+        if isinstance(data, list):
+            requests = []
+            for item in data:
+                requests.append(cls(
+                    jsonrpc = item.get("jsonrpc"),
+                    method = item.get("method"),
+                    id = item.get("id"),
+                    params = item.get("params")
+                ))
+            return requests
+        else:
+            return cls(
+                jsonrpc = data.get("jsonrpc"),
+                method = data.get("method"),
+                id = data.get("id"),
+                params = data.get("params")
+            )
+
+
+    # Alias
+    loads = from_string
+
+
+    def to_string(self):
+        """
+        Returns a Json-string
+        """
+
+        positional_params, named_params = self.get_splitted_params()
+
+        # Create dictionary
+        if named_params:
+            params = named_params
+            if positional_params:
+                params["__args"] = positional_params
+        else:
+            params = positional_params
+        data = {
+            "method": self.method,
+            "id": self.id,
+            "jsonrpc": self.jsonrpc or "2.0",
+            "params": params
+        }
+
+        # Return Json
+        return json.dumps(data)
+
+
+    # Alias
+    dumps = to_string
+
+
+# Alias for *Request.loads*
+parse_request_json = Request.from_string
 
 
 def create_request_dict(method, *args, **kwargs):
@@ -103,7 +147,7 @@ def create_request_dict(method, *args, **kwargs):
     data = {
         "method": unicode(method),
         "id": unicode(uuid.uuid4()),
-        "jsonrpc": u"2.0",
+        "jsonrpc": "2.0",
         "params": params
     }
     return data

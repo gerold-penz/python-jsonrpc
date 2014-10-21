@@ -13,6 +13,10 @@ Version 0.5.4
 
 - New Alias `ServiceProxy` added. For better compatibility to other libraries.
 
+- *Request.from_string()* added
+
+- *Request.to_string()* added
+
 
 =============
 Version 0.5.3
