@@ -22,10 +22,6 @@ def rpcmethod(func):
     return func
 
 
-# Alias for `rpcmethod` for better compatibility to other libraries
-ServiceMethod = rpcmethod
-
-
 class JsonRpc(object):
     """
     JSON-RPC

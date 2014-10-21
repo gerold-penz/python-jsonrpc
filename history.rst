@@ -6,6 +6,15 @@ by Gerold Penz 2013-2014
 
 
 =============
+Version 0.5.4
+=============
+
+2014-10-21
+
+- New Alias `ServiceProxy` added. For better compatibility to other libraries.
+
+
+=============
 Version 0.5.3
 =============
 
