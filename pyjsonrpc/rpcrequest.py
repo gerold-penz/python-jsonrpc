@@ -163,3 +163,8 @@ def create_request_json(method, *args, **kwargs):
     """
 
     return json.dumps(create_request_dict(method, *args, **kwargs))
+
+
+# Alias
+create_request_string = create_request_json
+

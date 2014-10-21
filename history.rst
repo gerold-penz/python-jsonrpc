@@ -17,6 +17,8 @@ Version 0.5.4
 
 - *Request.to_string()* added
 
+- Examples added
+
 
 =============
 Version 0.5.3
