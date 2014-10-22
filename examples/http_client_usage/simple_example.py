@@ -12,7 +12,7 @@ sys.path.insert(0, APPDIR)
 
 import pyjsonrpc
 
-rpc_client = pyjsonrpc.HttpClient("http://localhost:8080")
+rpc_client = pyjsonrpc.HttpClient("http://localhost:8080", gzipped = True)
 
 # Example with *call*
 print rpc_client.call("add", 1, 2)
@@ -25,3 +25,7 @@ print rpc_client.add(5, 6)
 
 # Example with *notify* (no response)
 rpc_client.notify("add", 7, 8)
+
+# Example with *Umlauts*
+print rpc_client.add(u"Umlauts and special characters: ", u"ÖÄÜß")
+

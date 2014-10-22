@@ -6,6 +6,19 @@ by Gerold Penz 2013-2014
 
 
 =============
+Version 0.5.5
+=============
+
+2014-10-22
+
+- Httpclient and HttpRequestHandler: Added the possibility to compress
+  HTTP-requests and HTTP-responses with *gzip*. @ajtag: Thanks :-)
+
+- Workaround in Response-class for other external library (I don't know which one.
+  ask @ajtag): Response accepts "faultCode", "fault" and "faultString".
+
+
+=============
 Version 0.5.4
 =============
 

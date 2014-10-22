@@ -3,6 +3,7 @@
 
 from bunch import Bunch
 from rpcjson import json
+from rpcerror import InternalError
 
 
 class Response(Bunch):
@@ -95,11 +96,26 @@ class Response(Bunch):
         error = response_dict.get("error")
         if error:
             result = None
-            error = cls.Error(
-                code = error.get("code"),
-                message = error.get("message"),
-                data = error.get("data")
-            )
+            if "code" in error:
+                # JSON-RPC Standard Error
+                error = cls.Error(
+                    code = error.get("code"),
+                    message = error.get("message"),
+                    data = error.get("data")
+                )
+            elif "fault" in error:
+                # Workaround for other library? I don't know it.
+                error = cls.Error(
+                    code = error.get("faultCode"),
+                    message = error.get("fault"),
+                    data = error.get("faultString")
+                )
+            else:
+                error = cls.Error(
+                    code = InternalError.code,
+                    message = InternalError.message,
+                    data = "\n".join(["%s: %s" % (k, v) for k, v in error])
+                )
         else:
             result = response_dict.get("result")
             error = None

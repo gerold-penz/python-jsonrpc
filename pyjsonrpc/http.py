@@ -9,12 +9,27 @@ import SocketServer
 import httplib
 import urllib
 import urlparse
+import gzip
+import tempfile
+import Cookie
 import rpcrequest
 import rpcresponse
 import rpcerror
 import rpclib
-import Cookie
 from rpcjson import json
+
+
+MAX_IN_MEMORY = 1024 * 1024 * 10  # 10 MiB
+
+
+class _SpooledTemporaryFile(tempfile.SpooledTemporaryFile):
+    def __len__(self):
+        current_pos = self.tell()
+        try:
+            self.seek(0, 2)
+            return self.tell()
+        finally:
+            self.seek(current_pos)
 
 
 def http_request(
@@ -25,7 +40,8 @@ def http_request(
     timeout = None,
     additional_headers = None,
     content_type = None,
-    cookies = None
+    cookies = None,
+    gzipped = None
 ):
     """
     Fetch data from webserver (POST request)
@@ -47,12 +63,26 @@ def http_request(
     :param cookies: Possibility to add simple cookie-items as key-value pairs.
         The key and the value of each cookie-item must be a bytestring.
         Unicode is not allowed here.
+
+    :param gzipped: If `True`, the JSON-String will be gzip-compressed.
     """
 
-    request = urllib2.Request(url, data = json_string)
+    # Create request and add data (SpooledTemporaryFile to reduce memory usage)
+    request = urllib2.Request(url)
+    spooled_file = _SpooledTemporaryFile(max_size = MAX_IN_MEMORY, mode = "wb")
+    if gzipped:
+        with gzip.GzipFile(filename = "", fileobj = spooled_file) as gz:
+            gz.write(json_string)
+        request.add_header("Content-Encoding", "gzip")
+    else:
+        spooled_file.write(json_string)
+    del json_string
+    spooled_file.seek(0)
+    request.add_data(spooled_file)
 
-    # Content-Type
+    # Add headers
     request.add_header("Content-Type", content_type or "application/json")
+    request.add_header('Accept-Encoding', 'gzip')
 
     # Authorization
     if username:
@@ -69,13 +99,24 @@ def http_request(
         for key, val in additional_headers.items():
             request.add_header(key, val)
 
-    # Request
+    # Send request to server
     response = urllib2.urlopen(request, timeout = timeout)
-    response_string = response.read()
-    response.close()
 
-    # Finished
-    return response_string
+    # Analyze response and return result
+    content_encoding = response.headers.get("Content-Encoding", "")
+    try:
+        if "gzip" in content_encoding:
+            with _SpooledTemporaryFile(
+                max_size = MAX_IN_MEMORY, mode = "wb"
+            ) as result_file:
+                with gzip.GzipFile(filename = "", fileobj = result_file) as gz:
+                    gz.write(json_string)
+                result_file.seek(0)
+                return result_file.read()
+        else:
+            return response.read()
+    finally:
+        response.close()
 
 
 class HttpClient(object):
@@ -99,7 +140,8 @@ class HttpClient(object):
         timeout = None,
         additional_headers = None,
         content_type = None,
-        cookies = None
+        cookies = None,
+        gzipped = None
     ):
         """
         :param: URL to the JSON-RPC handler on the HTTP-Server.
@@ -121,6 +163,8 @@ class HttpClient(object):
         :param cookies: Possibility to add simple cookie-items as key-value pairs.
             The key and the value of each cookie-item must be a bytestring.
             Unicode is not allowed here.
+
+        :param gzipped: If `True`, the JSON-String will gzip-compressed.
         """
 
         self.url = url
@@ -130,6 +174,7 @@ class HttpClient(object):
         self.additional_headers = additional_headers
         self.content_type = content_type
         self.cookies = cookies
+        self.gzipped = gzipped
 
 
     def call(self, method, *args, **kwargs):
@@ -162,7 +207,8 @@ class HttpClient(object):
             timeout = self.timeout,
             additional_headers = self.additional_headers,
             content_type = self.content_type,
-            cookies = self.cookies
+            cookies = self.cookies,
+            gzipped = self.gzipped
         )
         if not response_json:
             return
@@ -349,9 +395,22 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
         Handles HTTP-POST-Request
         """
 
-        # Read JSON request
+        # Read, analyze and parse request
         content_length = int(self.headers.get("Content-Length", 0))
-        request_json = self.rfile.read(content_length)
+        content_encoding = self.headers.get("Content-Encoding", "")
+
+        if "gzip" in content_encoding:
+            with _SpooledTemporaryFile(
+                max_size = MAX_IN_MEMORY, mode = "wb"
+            ) as gzipped_file:
+                gzipped_file.write(self.rfile.read(content_length))
+                gzipped_file.seek(0)
+                with gzip.GzipFile(
+                    filename = "", mode = "rb", fileobj = gzipped_file
+                ) as gz:
+                    request_json = gz.read()
+        else:
+            request_json = self.rfile.read(content_length)
 
         # Call
         response_json = self.call(request_json) or ""
@@ -416,4 +475,6 @@ def handle_cgi_request(methods = None):
 
     # Return result
     print response_json
+
+
 
