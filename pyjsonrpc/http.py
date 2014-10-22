@@ -415,6 +415,12 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
         # Call
         response_json = self.call(request_json) or ""
 
+
+
+        # ToDo: Compress response if allowed
+
+
+
         # Return result
         self.send_response(code = httplib.OK)
         self.set_content_type(self.content_type)
