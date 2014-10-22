@@ -9,7 +9,6 @@ APPDIR = os.path.abspath(os.path.join(THISDIR, os.path.pardir, os.path.pardir))
 sys.path.insert(0, APPDIR)
 # END --- required only for testing, remove in real world code --- END
 
-
 import pyjsonrpc
 
 
@@ -17,9 +16,6 @@ class MyJsonRpcHandler(pyjsonrpc.HttpRequestHandler):
 
     @pyjsonrpc.rpcmethod
     def add(self, a, b):
-        """Test function"""
-
-        print "Function called with these arguments: {a} {b}".format(a = a, b = b)
         return a + b
 
 
