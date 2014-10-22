@@ -14,18 +14,11 @@ import pyjsonrpc
 
 rpc_client = pyjsonrpc.HttpClient("http://localhost:8080", gzipped = True)
 
-# Example with *call*
-print rpc_client.call("add", 1, 2)
 
-# Example with direct *call*
-print rpc_client("add", 3, 4)
+# Create very large string
+s = u"We are the champions! " * (47662 * 50)  # 50 MiB
+print len(s)
 
-# Example with *attribute* name
-print rpc_client.add(5, 6)
-
-# Example with *notify* (no response)
-rpc_client.notify("add", 7, 8)
-
-# Example with *Umlauts*
-print rpc_client.add(u"Umlauts: ", u"ÖÄÜ")
+# Example
+print rpc_client.add(u"Long string: ", s)[:1000]
 

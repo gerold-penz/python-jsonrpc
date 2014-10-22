@@ -6,6 +6,16 @@ by Gerold Penz 2013-2014
 
 
 =============
+Version 0.5.6
+=============
+
+2014-10-22
+
+- Gzip-compression cleaned. I'm not sure, if the usage of
+  *tempfile.SpooledTemporaryFile* is a good idea. I must test it.
+
+
+=============
 Version 0.5.5
 =============
 

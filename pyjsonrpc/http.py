@@ -69,20 +69,20 @@ def http_request(
 
     # Create request and add data (SpooledTemporaryFile to reduce memory usage)
     request = urllib2.Request(url)
-    spooled_file = _SpooledTemporaryFile(max_size = MAX_IN_MEMORY, mode = "wb")
+    spooled_file = _SpooledTemporaryFile(max_size = MAX_IN_MEMORY)
     if gzipped:
         with gzip.GzipFile(filename = "", fileobj = spooled_file) as gz:
             gz.write(json_string)
         request.add_header("Content-Encoding", "gzip")
+        request.add_header("Accept-Encoding", "gzip")
     else:
         spooled_file.write(json_string)
     del json_string
     spooled_file.seek(0)
     request.add_data(spooled_file)
 
-    # Add headers
+    # Content Type
     request.add_header("Content-Type", content_type or "application/json")
-    request.add_header('Accept-Encoding', 'gzip')
 
     # Authorization
     if username:
@@ -103,16 +103,15 @@ def http_request(
     response = urllib2.urlopen(request, timeout = timeout)
 
     # Analyze response and return result
-    content_encoding = response.headers.get("Content-Encoding", "")
     try:
-        if "gzip" in content_encoding:
-            with _SpooledTemporaryFile(
-                max_size = MAX_IN_MEMORY, mode = "wb"
-            ) as result_file:
-                with gzip.GzipFile(filename = "", fileobj = result_file) as gz:
-                    gz.write(json_string)
-                result_file.seek(0)
-                return result_file.read()
+        if "gzip" in response.headers.get("Content-Encoding", ""):
+            response_file = _SpooledTemporaryFile(max_size = MAX_IN_MEMORY)
+            response_file.writelines(response.readlines())
+            response_file.seek(0)
+            with gzip.GzipFile(
+                filename = "", mode = "r", fileobj = response_file
+            ) as gz:
+                return gz.read()
         else:
             return response.read()
     finally:
@@ -327,6 +326,14 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
         self.send_header("Content-Length", str(length))
 
 
+    def set_content_encoding(self, content_encoding):
+        """
+        Set content-encoding to *content_encoding*
+        """
+
+        self.send_header("Content-Encoding", content_encoding)
+
+
     def do_GET(self):
         """
         Handles HTTP-GET-Request
@@ -398,11 +405,11 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
         # Read, analyze and parse request
         content_length = int(self.headers.get("Content-Length", 0))
         content_encoding = self.headers.get("Content-Encoding", "")
+        accept_encoding = self.headers.get("Accept-Encoding", "")
 
         if "gzip" in content_encoding:
-            with _SpooledTemporaryFile(
-                max_size = MAX_IN_MEMORY, mode = "wb"
-            ) as gzipped_file:
+            # Decompress
+            with _SpooledTemporaryFile(max_size = MAX_IN_MEMORY) as gzipped_file:
                 gzipped_file.write(self.rfile.read(content_length))
                 gzipped_file.seek(0)
                 with gzip.GzipFile(
@@ -415,19 +422,29 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
         # Call
         response_json = self.call(request_json) or ""
 
-
-
-        # ToDo: Compress response if allowed
-
-
-
         # Return result
         self.send_response(code = httplib.OK)
         self.set_content_type(self.content_type)
         self.set_no_cache()
-        self.set_content_length(len(response_json))
-        self.end_headers()
-        self.wfile.write(response_json)
+
+        if "gzip" in accept_encoding:
+            # Gzipped
+            content = _SpooledTemporaryFile(max_size = MAX_IN_MEMORY)
+            with gzip.GzipFile(filename = "", mode = "w", fileobj = content) as gz:
+                gz.write(response_json)
+            content.seek(0)
+
+            # Send compressed
+            self.set_content_encoding("gzip")
+            self.set_content_length(len(content))
+            self.end_headers()
+            self.wfile.write(content.read())
+        else:
+            # Send uncompressed
+            self.set_content_length(len(response_json))
+            self.end_headers()
+            self.wfile.write(response_json)
+
         return
 
 
