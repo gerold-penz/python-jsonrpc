@@ -6,6 +6,15 @@ by Gerold Penz 2013-2014
 
 
 =============
+Version 0.5.7
+=============
+
+2014-10-23
+
+- Usage of SpooledTemporaryFile cleaned.
+
+
+=============
 Version 0.5.6
 =============
 

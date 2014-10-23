@@ -12,12 +12,15 @@ sys.path.insert(0, APPDIR)
 
 import pyjsonrpc
 
-rpc_client = pyjsonrpc.HttpClient("http://localhost:8080")
+rpc_client = pyjsonrpc.HttpClient("http://localhost:8080", gzipped = True)
 
 # Example with *call*
 print repr(rpc_client.call("add", 1, 2))
 
+# Create very large string
+s = u"We are the champions! " * (47662 * 15)  # 15 MiB
 
-# Example with *notify*
-print repr(rpc_client.notify("add", 1, 2))
+# Example
+print rpc_client.add(u"Long string: ", s)[:100]
+
 

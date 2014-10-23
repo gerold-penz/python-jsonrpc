@@ -11,6 +11,10 @@ import urllib
 import urlparse
 import gzip
 import tempfile
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from StringIO import StringIO
 import Cookie
 import rpcrequest
 import rpcresponse
@@ -18,18 +22,8 @@ import rpcerror
 import rpclib
 from rpcjson import json
 
-
-MAX_IN_MEMORY = 1024 * 1024 * 10  # 10 MiB
-
-
-class _SpooledTemporaryFile(tempfile.SpooledTemporaryFile):
-    def __len__(self):
-        current_pos = self.tell()
-        try:
-            self.seek(0, 2)
-            return self.tell()
-        finally:
-            self.seek(current_pos)
+MAX_SIZE_IN_MEMORY = 1024 * 1024 * 10  # 10 MiB
+CHUNK_SIZE = 1024 * 1024  # 1 MiB
 
 
 def http_request(
@@ -67,19 +61,20 @@ def http_request(
     :param gzipped: If `True`, the JSON-String will be gzip-compressed.
     """
 
-    # Create request and add data (SpooledTemporaryFile to reduce memory usage)
+    # Create request and add data
     request = urllib2.Request(url)
-    spooled_file = _SpooledTemporaryFile(max_size = MAX_IN_MEMORY)
+
     if gzipped:
-        with gzip.GzipFile(filename = "", fileobj = spooled_file) as gz:
-            gz.write(json_string)
+        # Compress content (SpooledTemporaryFile to reduce memory usage)
+        spooled_file = _SpooledFile()
+        _gzip_str_to_file(json_string, spooled_file)
+        del json_string
         request.add_header("Content-Encoding", "gzip")
         request.add_header("Accept-Encoding", "gzip")
+        spooled_file.seek(0)
+        request.add_data(spooled_file)
     else:
-        spooled_file.write(json_string)
-    del json_string
-    spooled_file.seek(0)
-    request.add_data(spooled_file)
+        request.add_data(json_string)
 
     # Content Type
     request.add_header("Content-Type", content_type or "application/json")
@@ -105,13 +100,8 @@ def http_request(
     # Analyze response and return result
     try:
         if "gzip" in response.headers.get("Content-Encoding", ""):
-            response_file = _SpooledTemporaryFile(max_size = MAX_IN_MEMORY)
-            response_file.writelines(response.readlines())
-            response_file.seek(0)
-            with gzip.GzipFile(
-                filename = "", mode = "r", fileobj = response_file
-            ) as gz:
-                return gz.read()
+            response_file = _SpooledFile(source_file = response)
+            return _gunzip_file(response_file)
         else:
             return response.read()
     finally:
@@ -409,11 +399,17 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
 
         if "gzip" in content_encoding:
             # Decompress
-            with _SpooledTemporaryFile(max_size = MAX_IN_MEMORY) as gzipped_file:
+            with _SpooledFile() as gzipped_file:
+                # ToDo: read chunks
+                # if content_length <= CHUNK_SIZE:
+                #     gzipped_file.write(self.rfile.read(content_length))
+                # else:
+                #     chunks_quantity = content_length % CHUNK_SIZE
+                # ...
                 gzipped_file.write(self.rfile.read(content_length))
                 gzipped_file.seek(0)
                 with gzip.GzipFile(
-                    filename = "", mode = "rb", fileobj = gzipped_file
+                    filename = "", mode = "r", fileobj = gzipped_file
                 ) as gz:
                     request_json = gz.read()
         else:
@@ -429,7 +425,7 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
 
         if "gzip" in accept_encoding:
             # Gzipped
-            content = _SpooledTemporaryFile(max_size = MAX_IN_MEMORY)
+            content = _SpooledFile()
             with gzip.GzipFile(filename = "", mode = "w", fileobj = content) as gz:
                 gz.write(response_json)
             content.seek(0)
@@ -498,6 +494,50 @@ def handle_cgi_request(methods = None):
 
     # Return result
     print response_json
+
+
+def _gzip_str_to_file(raw_text, dest_file):
+    with gzip.GzipFile(filename = "", fileobj = dest_file) as gz:
+        gz.write(raw_text)
+
+
+def _gunzip_file(source_file):
+    with gzip.GzipFile(filename = "", mode = "r", fileobj = source_file) as gz:
+        return gz.read()
+
+
+class _SpooledFile(tempfile.SpooledTemporaryFile):
+    """
+    Spooled temporary file.
+
+    StringIO with fallback to temporary file if size > MAX_SIZE_IN_MEMORY.
+    """
+
+
+    def __init__(
+        self,
+        max_size = MAX_SIZE_IN_MEMORY,
+        mode = "w+b",
+        source_file = None,
+        *args, **kwargs
+    ):
+        tempfile.SpooledTemporaryFile.__init__(
+            self, max_size = max_size, mode = mode
+        )
+        if source_file:
+            for chunk in iter(lambda: source_file.read(CHUNK_SIZE), ""):
+                self.write(chunk)
+            self.seek(0)
+
+
+    def __len__(self):
+        current_pos = self.tell()
+        try:
+            self.seek(0, 2)
+            return self.tell()
+        finally:
+            self.seek(current_pos)
+
 
 
 
