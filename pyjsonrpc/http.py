@@ -11,10 +11,6 @@ import urllib
 import urlparse
 import gzip
 import tempfile
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from StringIO import StringIO
 import Cookie
 import rpcrequest
 import rpcresponse
