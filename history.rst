@@ -13,6 +13,8 @@ Version 0.6.1
 
 - CherryPy-Handler distinguishes between GET and POST.
 
+- WSGI-Examples added
+
 
 ==================
 Version 0.6.0.BETA
