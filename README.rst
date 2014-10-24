@@ -129,6 +129,32 @@ Library Usage Example
         print "Result:", response.result
 
 
+================
+CherryPy Example
+================
+
+.. code:: python
+
+    #!/usr/bin/env python
+    # coding: utf-8
+
+    import cherrypy
+    from pyjsonrpc.cp import CherryPyJsonRpc, rpcmethod
+
+
+    class Root(CherryPyJsonRpc):
+
+        @rpcmethod
+        def add(self, a, b):
+            """Test method"""
+            return a + b
+
+        index = CherryPyJsonRpc.request_handler
+
+
+    cherrypy.quickstart(Root())
+
+
 ========
 Licenses
 ========

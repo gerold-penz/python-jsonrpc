@@ -5,9 +5,9 @@ Python JSON-RPC Client Server Library
 by Gerold Penz 2013-2014
 
 
-=============
-Version 0.6.0
-=============
+==================
+Version 0.6.0-BETA
+==================
 
 2014-10-24
 
