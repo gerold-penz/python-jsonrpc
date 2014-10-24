@@ -152,6 +152,8 @@ CherryPy Example
         index = CherryPyJsonRpc.request_handler
 
 
+    print "Starting HTTP server ..."
+    print "URL: http://localhost:8080"
     cherrypy.quickstart(Root())
 
 
