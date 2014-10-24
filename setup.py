@@ -29,7 +29,7 @@ setup(
     keywords = (
         "JSONRPC, JSON-RPC, JSON, RPC, Client, Server, HTTP-Server, "
         "HTTP-Client, CGI, Remote Procedure Call, JavaScript Object Notation, "
-        "CherryPy, Data Interchange"
+        "CherryPy, Data Interchange, BaseHTTPServer"
     ),
     author = "Gerold Penz",
     author_email = "gerold@halvar.at",
