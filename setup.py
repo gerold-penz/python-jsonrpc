@@ -28,8 +28,8 @@ setup(
     long_description = open("README.rst").read(),
     keywords = (
         "JSONRPC, JSON-RPC, JSON, RPC, Client, Server, HTTP-Server, "
-        "HTTP-Client, CGI, Remote Procedure Call, "
-        "JavaScript Object Notation, Data Interchange"
+        "HTTP-Client, CGI, Remote Procedure Call, JavaScript Object Notation, "
+        "CherryPy, Data Interchange"
     ),
     author = "Gerold Penz",
     author_email = "gerold@halvar.at",
@@ -40,8 +40,8 @@ setup(
         #"Development Status :: 1 - Planning",
         # "Development Status :: 2 - Pre-Alpha",
         # "Development Status :: 3 - Alpha",
-        "Development Status :: 4 - Beta",
-        # "Development Status :: 5 - Production/Stable",
+        # "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)",

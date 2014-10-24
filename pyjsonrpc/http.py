@@ -365,7 +365,7 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
                 args = []
                 kwargs = params
 
-        # Create JSON reqeust string
+        # Create JSON request string
         request_dict = rpcrequest.create_request_dict(method, *args, **kwargs)
         request_dict["jsonrpc"] = jsonrpc
         request_dict["id"] = id
