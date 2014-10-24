@@ -535,5 +535,3 @@ class _SpooledFile(tempfile.SpooledTemporaryFile):
             self.seek(current_pos)
 
 
-
-

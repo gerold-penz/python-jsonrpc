@@ -10,17 +10,19 @@ sys.path.insert(0, APPDIR)
 # END --- required only for testing, remove in real world code --- END
 
 
-import pyjsonrpc
+import cherrypy
+from pyjsonrpc.cp import CherryPyJsonRpc, rpcmethod
 
-rpc_client = pyjsonrpc.HttpClient("http://localhost:8080", gzipped = True)
 
-# Example with *call*
-print repr(rpc_client.call("add", 1, 2))
+class Root(CherryPyJsonRpc):
 
-# # Create very large string
-# s = u"We are the champions! " * (47662 * 15)  # 15 MiB
-#
-# # Example
-# print rpc_client.add(u"Long string: ", s)[:100]
+    @rpcmethod
+    def add(self, a, b):
+        """Test method"""
+        return a + b
 
+    index = CherryPyJsonRpc.request_handler
+
+
+cherrypy.quickstart(Root())
 
