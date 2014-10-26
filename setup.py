@@ -51,6 +51,8 @@ setup(
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: System :: Networking",
         "Topic :: Internet :: WWW/HTTP",
+        "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+        "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
     ],
     install_requires = ["bunch"],
 )
