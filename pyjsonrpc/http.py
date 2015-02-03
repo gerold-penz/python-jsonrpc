@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+import os
 import sys
 import urllib2
+import StringIO
 import base64
 import BaseHTTPServer
 import SocketServer
@@ -17,6 +19,15 @@ import rpcresponse
 import rpcerror
 import rpclib
 from rpcjson import json
+
+# Workaround for Google App Engine
+if "APPENGINE_RUNTIME" in os.environ:
+    TmpFile = StringIO.StringIO
+    google_app_engine = True
+else:
+    TmpFile = tempfile.SpooledTemporaryFile
+    google_app_engine = False
+
 
 MAX_SIZE_IN_MEMORY = 1024 * 1024 * 10  # 10 MiB
 CHUNK_SIZE = 1024 * 1024  # 1 MiB
@@ -502,7 +513,7 @@ def _gunzip_file(source_file):
         return gz.read()
 
 
-class _SpooledFile(tempfile.SpooledTemporaryFile):
+class _SpooledFile(TmpFile):
     """
     Spooled temporary file.
 
@@ -517,9 +528,13 @@ class _SpooledFile(tempfile.SpooledTemporaryFile):
         source_file = None,
         *args, **kwargs
     ):
-        tempfile.SpooledTemporaryFile.__init__(
-            self, max_size = max_size, mode = mode
-        )
+
+        # Init
+        if google_app_engine:
+            TmpFile.__init__(self, mode = mode)
+        else:
+            TmpFile.__init__(self, max_size = max_size, mode = mode)
+
         if source_file:
             for chunk in iter(lambda: source_file.read(CHUNK_SIZE), ""):
                 self.write(chunk)

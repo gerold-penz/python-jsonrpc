@@ -2,7 +2,16 @@
 Python JSON-RPC Client Server Library With Additional Support for BaseHTTPServer, CherryPy And CGI
 ##################################################################################################
 
-by Gerold Penz 2013-2014
+by Gerold Penz 2013-2015
+
+
+=============
+Version 0.6.2
+=============
+
+2015-02-03
+
+- For Google App Engine: *SpooledTemporaryFile* replaced with StringIO.
 
 
 =============
