@@ -5,6 +5,10 @@ Python JSON-RPC Client Server Library With Additional Support for BaseHTTPServer
 by Gerold Penz 2013-2015
 
 
+Near Future: Urllib3 for faster client requests
+
+
+
 =============
 Version 0.6.2
 =============
