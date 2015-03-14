@@ -5,8 +5,8 @@ import sys
 import traceback
 import uuid
 import rpcerror
+import rpcjson
 from bunch import Bunch
-from rpcjson import json, JsonParseError
 
 
 class Request(Bunch):
@@ -67,8 +67,8 @@ class Request(Bunch):
 
         # Parse
         try:
-            data = json.loads(json_string)
-        except JsonParseError:
+            data = rpcjson.loads(json_string)
+        except rpcjson.JsonParseError:
             traceback_info = "".join(traceback.format_exception(*sys.exc_info()))
             raise rpcerror.ParseError(data = traceback_info)
 
@@ -118,7 +118,7 @@ class Request(Bunch):
         }
 
         # Return Json
-        return json.dumps(data)
+        return rpcjson.dumps(data)
 
 
     # Alias
@@ -162,7 +162,7 @@ def create_request_json(method, *args, **kwargs):
     :param kwargs: Named parameters
     """
 
-    return json.dumps(create_request_dict(method, *args, **kwargs))
+    return rpcjson.dumps(create_request_dict(method, *args, **kwargs))
 
 
 # Alias

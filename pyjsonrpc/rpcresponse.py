@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+import rpcjson
 from bunch import Bunch
-from rpcjson import json
 from rpcerror import InternalError
 
 
@@ -80,7 +80,7 @@ class Response(Bunch):
         Returns the response as JSON-string
         """
 
-        return json.dumps(self.to_dict())
+        return rpcjson.dumps(self.to_dict())
 
 
     # Alias
@@ -137,7 +137,7 @@ class Response(Bunch):
         if not json_string:
             return
 
-        data = json.loads(json_string)
+        data = rpcjson.loads(json_string)
 
         if isinstance(data, list):
             retlist = []

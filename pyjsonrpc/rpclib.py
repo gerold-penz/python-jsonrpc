@@ -6,7 +6,7 @@ import traceback
 import rpcrequest
 import rpcresponse
 import rpcerror
-from rpcjson import json
+import rpcjson
 
 
 def rpcmethod(func):
@@ -165,9 +165,9 @@ class JsonRpc(object):
         # Return as JSON-string (batch or normal)
         if responses:
             if len(requests) == 1:
-                return json.dumps(responses[0])
+                return rpcjson.dumps(responses[0])
             elif len(requests) > 1:
-                return json.dumps(responses)
+                return rpcjson.dumps(responses)
 
 
     def __call__(self, json_request):

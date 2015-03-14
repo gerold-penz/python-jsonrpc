@@ -8,6 +8,21 @@ by Gerold Penz 2013-2015
 Near Future: Urllib3 for faster client requests
 
 
+=============
+Version 0.7.0
+=============
+
+2015-03-14
+
+- Possibly **incompatible** changes in background: Now, *pyjsonrpc* uses
+  only the builtin JSON-library. *jsonlib2* and *simplejson* are no longer
+  supported.
+
+- All parameters of the functions *json.loads* and *json.dumps* can now be
+  customized.
+
+- New examples: "ordered_dict_example_server.py", "ordered_dict_example_client.py"
+
 
 =============
 Version 0.6.2

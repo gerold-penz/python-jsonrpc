@@ -11,7 +11,7 @@ import httplib
 import rpclib
 import rpcrequest
 import cherrypy
-from rpcjson import json
+import rpcjson
 # ToDo: Replace compress and decompress with faster methods
 from cherrypy.lib.encoding import compress, decompress
 
@@ -57,7 +57,7 @@ class CherryPyJsonRpc(rpclib.JsonRpc):
             _kwargs = {}
             params = kwargs.get("params")
             if params:
-                params = json.loads(params[0])
+                params = rpcjson.loads(params[0])
                 if isinstance(params, list):
                     _args = params
                     _kwargs = {}
@@ -69,7 +69,7 @@ class CherryPyJsonRpc(rpclib.JsonRpc):
             request_dict = rpcrequest.create_request_dict(method, *_args, **_kwargs)
             request_dict["jsonrpc"] = jsonrpc
             request_dict["id"] = id
-            request_json = json.dumps(request_dict)
+            request_json = rpcjson.dumps(request_dict)
         else:
             # POST
             if "gzip" in cherrypy.request.headers.get("Content-Encoding", ""):

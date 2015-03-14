@@ -10,6 +10,11 @@ sys.path.insert(0, APPDIR)
 # END --- required only for testing, remove in real world code --- END
 
 import pyjsonrpc
+import pyjsonrpc.rpcjson
+import collections
+
+# JSON-dumps settings
+pyjsonrpc.rpcjson.loads_object_pairs_hook = collections.OrderedDict
 
 
 class MyJsonRpcHandler(pyjsonrpc.HttpRequestHandler):
@@ -17,6 +22,10 @@ class MyJsonRpcHandler(pyjsonrpc.HttpRequestHandler):
     @pyjsonrpc.rpcmethod
     def add(self, a, b):
         return a + b
+
+
+    # @pyjsonrpc.rpcmethod
+    # def add_days(self, ):
 
 
 httpd = pyjsonrpc.ThreadingHttpServer(

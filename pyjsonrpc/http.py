@@ -18,7 +18,7 @@ import rpcrequest
 import rpcresponse
 import rpcerror
 import rpclib
-from rpcjson import json
+import rpcjson
 
 # Workaround for Google App Engine
 if "APPENGINE_RUNTIME" in os.environ:
@@ -192,7 +192,7 @@ class HttpClient(object):
             request_json = rpcrequest.create_request_json(method, *args, **kwargs)
         else:
             assert not args and not kwargs
-            request_json = json.dumps(method)
+            request_json = rpcjson.dumps(method)
 
         # Call the HTTP-JSON-RPC server
         response_json = http_request(
@@ -368,7 +368,7 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
         kwargs = {}
         params = query.get("params")
         if params:
-            params = json.loads(params[0])
+            params = rpcjson.loads(params[0])
             if isinstance(params, list):
                 args = params
                 kwargs = {}
@@ -380,7 +380,7 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
         request_dict = rpcrequest.create_request_dict(method, *args, **kwargs)
         request_dict["jsonrpc"] = jsonrpc
         request_dict["id"] = id
-        request_json = json.dumps(request_dict)
+        request_json = rpcjson.dumps(request_dict)
 
         # Call
         response_json = self.call(request_json) or ""
@@ -476,7 +476,7 @@ def handle_cgi_request(methods = None):
         method = fields.getfirst("method")
         params = fields.getfirst("params")
         if params:
-            params = json.loads(params)
+            params = rpcjson.loads(params)
             if isinstance(params, list):
                 args = params
                 kwargs = {}
@@ -488,7 +488,7 @@ def handle_cgi_request(methods = None):
         request_dict = rpcrequest.create_request_dict(method, *args, **kwargs)
         request_dict["jsonrpc"] = jsonrpc
         request_dict["id"] = id
-        request_json = json.dumps(request_dict)
+        request_json = rpcjson.dumps(request_dict)
 
     # Call
     response_json = rpclib.JsonRpc(methods = methods).call(request_json)
