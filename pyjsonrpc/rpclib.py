@@ -73,7 +73,7 @@ class JsonRpc(object):
             id = request.id
             method = request.get("method", "")
 
-            if not method in self.methods:
+            if method not in self.methods:
                 # Check if requested method is signed as *rpcmethod*
                 _method = getattr(self, method, None)
                 if (
@@ -83,7 +83,7 @@ class JsonRpc(object):
                 ):
                     self.methods[method] = _method
 
-            if not method in self.methods:
+            if method not in self.methods:
                 # Method not found error
                 responses.append(
                     rpcresponse.Response(
@@ -139,6 +139,14 @@ class JsonRpc(object):
                             error = rpcerror.InternalError(data = traceback_info)
                         )
                     )
+            except rpcerror.JsonRpcError, err:
+                responses.append(
+                    rpcresponse.Response(
+                        jsonrpc = jsonrpc,
+                        id = id,
+                        error = err
+                    )
+                )
             except BaseException, err:
                 traceback_info = "".join(traceback.format_exception(*sys.exc_info()))
                 if hasattr(err, "data"):

@@ -214,10 +214,17 @@ class HttpClient(object):
         if isinstance(response, rpcresponse.Response):
             if response.error:
                 # Raise error
-                raise rpcerror.jsonrpcerrors[response.error.code](
-                    message = response.error.message,
-                    data = response.error.data
-                )
+                if response.error.code in rpcerror.jsonrpcerrors:
+                    raise rpcerror.jsonrpcerrors[response.error.code](
+                        message = response.error.message,
+                        data = response.error.data
+                    )
+                else:
+                    raise rpcerror.JsonRpcError(
+                        message = response.error.message,
+                        data = response.error.data,
+                        code = response.error.code
+                    )
             else:
                 # Return result
                 return response.result

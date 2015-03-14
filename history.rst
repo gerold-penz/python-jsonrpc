@@ -9,6 +9,22 @@ Near Future: Urllib3 for faster client requests
 
 
 =============
+Version 0.7.1
+=============
+
+2015-03-14
+
+- Now, it is possible to raise *JsonRpcError* with any integer as error code.
+
+  Pull request #20 built in. Thanks OrangeTux.
+
+  - https://github.com/gerold-penz/python-jsonrpc/issues/1
+  - https://github.com/gerold-penz/python-jsonrpc/pull/20
+
+  Examples: "raise_error_example_server.py" and "raise_error_example_client.py"
+
+
+=============
 Version 0.7.0
 =============
 

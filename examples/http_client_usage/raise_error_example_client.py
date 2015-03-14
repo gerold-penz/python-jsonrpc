@@ -12,13 +12,11 @@ sys.path.insert(0, APPDIR)
 
 import pyjsonrpc
 
-rpc_client = pyjsonrpc.HttpClient("http://localhost:8080", gzipped = False)
+rpc_client = pyjsonrpc.HttpClient("http://localhost:8080", gzipped = True)
 
-# Example with *call*
 try:
     print repr(rpc_client.call("add", 1, 2))
 except pyjsonrpc.JsonRpcError, err:
     print err.code
     print err.message
     print err.data
-

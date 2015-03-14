@@ -21,6 +21,9 @@ class MyJsonRpcHandler(pyjsonrpc.HttpRequestHandler):
 
     @pyjsonrpc.rpcmethod
     def add(self, a, b):
+
+        raise pyjsonrpc.JsonRpcError(message = "TEST-ERROR", code = 123)
+
         return a + b
 
 
