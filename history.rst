@@ -16,6 +16,9 @@ Version 0.7.2
 
 - Better checking if empty json string.
 
+- Workaround for false "Content-Types": If the request is a POST-request,
+  the body will not read by cherrypy.
+
 
 =============
 Version 0.7.1

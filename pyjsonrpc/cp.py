@@ -19,6 +19,16 @@ from cherrypy.lib.encoding import compress, decompress
 rpcmethod = rpclib.rpcmethod
 
 
+
+def _no_body_processor_tool():
+    if cherrypy.request.method == "POST":
+        cherrypy.request.body.processors = {}
+
+cherrypy.tools.no_body_processor = cherrypy.Tool(
+    "on_start_resource", _no_body_processor_tool
+)
+
+
 class CherryPyJsonRpc(rpclib.JsonRpc):
     """
     CherryPy JSON-RPC
@@ -26,6 +36,7 @@ class CherryPyJsonRpc(rpclib.JsonRpc):
 
     @cherrypy.expose
     @cherrypy.tools.encode(encoding = "utf-8")
+    @cherrypy.tools.no_body_processor()
     def request_handler(self, *args, **kwargs):
         """
         Json-RPC Handler
