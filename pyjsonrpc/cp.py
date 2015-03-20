@@ -45,21 +45,11 @@ class CherryPyJsonRpc(rpclib.JsonRpc):
         if cherrypy.request.method == "GET":
             # GET
 
-            # jsonrpc
+            # Arguments
             jsonrpc = kwargs.get("jsonrpc")
-            if jsonrpc:
-                jsonrpc = jsonrpc[0]
-
-            # id
             id = kwargs.get("id")
-            if id:
-                id = id[0]
-
-            # method
             method = kwargs.get("method")
-            if method:
-                method = method[0]
-            else:
+            if not method:
                 # Bad Request
                 raise cherrypy.HTTPError(httplib.BAD_REQUEST)
 
@@ -68,7 +58,7 @@ class CherryPyJsonRpc(rpclib.JsonRpc):
             _kwargs = {}
             params = kwargs.get("params")
             if params:
-                params = rpcjson.loads(params[0])
+                params = rpcjson.loads(params)
                 if isinstance(params, list):
                     _args = params
                     _kwargs = {}
