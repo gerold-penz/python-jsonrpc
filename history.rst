@@ -9,6 +9,15 @@ Near Future: Urllib3 for faster client requests
 
 
 =============
+Version 0.7.2
+=============
+
+2015-03-20
+
+- Better checking if empty json string.
+
+
+=============
 Version 0.7.1
 =============
 

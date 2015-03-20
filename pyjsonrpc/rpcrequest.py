@@ -62,7 +62,7 @@ class Request(Bunch):
         """
 
         # No JSON-String
-        if json_string is None:
+        if not json_string:
             raise rpcerror.InvalidRequest()
 
         # Parse
