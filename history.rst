@@ -9,6 +9,16 @@ Near Future: Urllib3 for faster client requests
 
 
 =============
+Version 0.7.3
+=============
+
+2015-04-01
+
+- *JsonRpcError*-Class: *__str__*- and *__unicode__*-Function added. For better
+  error message when using ``unicde(err)``.
+
+
+=============
 Version 0.7.2
 =============
 
