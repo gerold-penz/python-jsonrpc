@@ -1,3 +1,8 @@
 include history.rst
 include version.txt
+
+include lgpl-3.0.txt
+include mit-license.txt
+include mit-lizenz-deutsch.txt
+
 recursive-include examples *
