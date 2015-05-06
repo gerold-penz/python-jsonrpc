@@ -14,9 +14,11 @@ import pyjsonrpc
 
 rpc_client = pyjsonrpc.HttpClient("http://localhost:8080", gzipped = False)
 
-# Example with *call*
 try:
-    print repr(rpc_client.call("add", 1, 2))
+    print rpc_client.format_it({
+        "a.b": "A.B",
+        "c.d": "C.D",
+    })
 except pyjsonrpc.JsonRpcError, err:
     print err.code
     print err.message

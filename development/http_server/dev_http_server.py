@@ -17,23 +17,19 @@ import collections
 pyjsonrpc.rpcjson.loads_object_pairs_hook = collections.OrderedDict
 
 
-class MyJsonRpcHandler(pyjsonrpc.HttpRequestHandler):
+class RequestHandler(pyjsonrpc.HttpRequestHandler):
 
     @pyjsonrpc.rpcmethod
-    def add(self, a, b):
-
-        # raise pyjsonrpc.JsonRpcError(message = "TEST-ERROR", code = 123)
-
-        return a + b
-
-
-    # @pyjsonrpc.rpcmethod
-    # def add_days(self, ):
+    def format_it(self, keys_and_values):
+        retstr = u""
+        for key, value in keys_and_values.items():
+            retstr += u"{key}: {value}\n".format(key = key, value = value)
+        return retstr
 
 
 httpd = pyjsonrpc.ThreadingHttpServer(
     server_address = ('localhost', 8080),
-    RequestHandlerClass = MyJsonRpcHandler
+    RequestHandlerClass = RequestHandler
 )
 print "Serving HTTP..."
 httpd.serve_forever()
