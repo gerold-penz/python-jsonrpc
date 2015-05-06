@@ -9,16 +9,6 @@ Near Future: Urllib3 for faster client requests
 
 
 =============
-Version 0.7.4
-=============
-
-2015-05-06
-
-- Fixed: Github issue #23 https://github.com/gerold-penz/python-jsonrpc/issues/23
-  Thank you "chris-barry".
-
-
-=============
 Version 0.7.3
 =============
 

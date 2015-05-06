@@ -144,11 +144,6 @@ def create_request_dict(method, *args, **kwargs):
             params["__args"] = args
     else:
         params = args
-
-    # Fixes Github issue #23.
-    if isinstance(params, tuple):
-        params = params[0]
-
     data = {
         "method": unicode(method),
         "id": unicode(uuid.uuid4()),
