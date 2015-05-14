@@ -9,6 +9,17 @@ Near Future: Urllib3 for faster client requests
 
 
 =============
+Version 0.7.4
+=============
+
+2015-05-14
+
+- HttpClient: Added option to disable SSL certificate checks
+
+- Example added: *custom_ssl_context.py*
+
+
+=============
 Version 0.7.3
 =============
 

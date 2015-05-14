@@ -12,6 +12,7 @@ import httplib
 import urllib
 import urlparse
 import gzip
+import ssl
 import tempfile
 import Cookie
 import rpcrequest
@@ -42,7 +43,8 @@ def http_request(
     additional_headers = None,
     content_type = None,
     cookies = None,
-    gzipped = None
+    gzipped = None,
+    ssl_context = None
 ):
     """
     Fetch data from webserver (POST request)
@@ -66,6 +68,10 @@ def http_request(
         Unicode is not allowed here.
 
     :param gzipped: If `True`, the JSON-String will be gzip-compressed.
+
+    :param ssl_context:  Specifies custom TLS/SSL settings for connection.
+        Python > 2.7.9
+        See: https://docs.python.org/2/library/ssl.html#client-side-operation
     """
 
     # Create request and add data
@@ -102,7 +108,18 @@ def http_request(
             request.add_header(key, val)
 
     # Send request to server
-    response = urllib2.urlopen(request, timeout = timeout)
+    if ssl_context:
+        try:
+            response = urllib2.urlopen(
+                request, timeout = timeout, context = ssl_context
+            )
+        except TypeError, err:
+            if u"context" in unicode(err):
+                raise NotImplementedError(u"SSL-Context needs Python >= 2.7.9")
+            else:
+                raise
+    else:
+        response = urllib2.urlopen(request, timeout = timeout)
 
     # Analyze response and return result
     try:
@@ -137,7 +154,8 @@ class HttpClient(object):
         additional_headers = None,
         content_type = None,
         cookies = None,
-        gzipped = None
+        gzipped = None,
+        ssl_context = None
     ):
         """
         :param: URL to the JSON-RPC handler on the HTTP-Server.
@@ -161,6 +179,10 @@ class HttpClient(object):
             Unicode is not allowed here.
 
         :param gzipped: If `True`, the JSON-String will gzip-compressed.
+
+        :param ssl_context:  Specifies custom TLS/SSL settings for connection.
+            Python >= 2.7.9
+            See: https://docs.python.org/2/library/ssl.html#client-side-operation
         """
 
         self.url = url
@@ -171,6 +193,7 @@ class HttpClient(object):
         self.content_type = content_type
         self.cookies = cookies
         self.gzipped = gzipped
+        self.ssl_context = ssl_context
 
 
     def call(self, method, *args, **kwargs):
@@ -204,7 +227,8 @@ class HttpClient(object):
             additional_headers = self.additional_headers,
             content_type = self.content_type,
             cookies = self.cookies,
-            gzipped = self.gzipped
+            gzipped = self.gzipped,
+            ssl_context = self.ssl_context
         )
         if not response_json:
             return
@@ -526,7 +550,6 @@ class _SpooledFile(TmpFile):
 
     StringIO with fallback to temporary file if size > MAX_SIZE_IN_MEMORY.
     """
-
 
     def __init__(
         self,
