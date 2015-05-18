@@ -100,7 +100,7 @@ class JsonRpc(object):
                 logging.error(
                     u"{error} -- {data}".format(
                         error = unicode(error),
-                        data = error.data
+                        data = repr(error.data)
                     )
                 )
 
@@ -130,7 +130,7 @@ class JsonRpc(object):
                         logging.error(
                             u"{error} -- {data}".format(
                                 error = unicode(error),
-                                data = error.data
+                                data = repr(error.data)
                             )
                         )
                 else:
@@ -153,7 +153,7 @@ class JsonRpc(object):
                     logging.error(
                         u"{error} -- {data}".format(
                             error = unicode(error),
-                            data = error.data
+                            data = repr(error.data)
                         )
                     )
                 else:
@@ -169,7 +169,7 @@ class JsonRpc(object):
                     logging.error(
                         u"{error} -- {data}".format(
                             error = unicode(error),
-                            data = error.data
+                            data = repr(error.data)
                         )
                     )
             except rpcerror.JsonRpcError, err:
@@ -184,7 +184,7 @@ class JsonRpc(object):
                 logging.error(
                     u"{error} -- {data}".format(
                         error = unicode(err),
-                        data = err.data
+                        data = repr(err.data)
                     )
                 )
             except BaseException, err:
@@ -205,7 +205,7 @@ class JsonRpc(object):
                 logging.error(
                     u"{error} -- {data}".format(
                         error = unicode(error),
-                        data = error.data
+                        data = repr(error.data)
                     )
                 )
 
