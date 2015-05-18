@@ -12,7 +12,6 @@ import httplib
 import urllib
 import urlparse
 import gzip
-import ssl
 import tempfile
 import Cookie
 import rpcrequest

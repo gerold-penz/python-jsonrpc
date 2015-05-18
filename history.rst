@@ -9,6 +9,15 @@ Near Future: Urllib3 for faster client requests
 
 
 =============
+Version 0.7.6
+=============
+
+2015-05-18
+
+- SSL-Import deleted
+
+
+=============
 Version 0.7.5
 =============
 
