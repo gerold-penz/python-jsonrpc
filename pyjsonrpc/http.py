@@ -14,6 +14,7 @@ import urlparse
 import gzip
 import tempfile
 import Cookie
+import logging
 import rpcrequest
 import rpcresponse
 import rpcerror
@@ -43,7 +44,8 @@ def http_request(
     content_type = None,
     cookies = None,
     gzipped = None,
-    ssl_context = None
+    ssl_context = None,
+    debug = None
 ):
     """
     Fetch data from webserver (POST request)
@@ -68,10 +70,16 @@ def http_request(
 
     :param gzipped: If `True`, the JSON-String will be gzip-compressed.
 
-    :param ssl_context:  Specifies custom TLS/SSL settings for connection.
+    :param ssl_context: Specifies custom TLS/SSL settings for connection.
         Python > 2.7.9
         See: https://docs.python.org/2/library/ssl.html#client-side-operation
+
+    :param debug: If `True` --> *logging.debug*
     """
+
+    # Debug
+    if debug:
+        logging.debug(u"Client-->Server: {json_string}".format(json_string = repr(json_string)))
 
     # Create request and add data
     request = urllib2.Request(url)
@@ -124,8 +132,16 @@ def http_request(
     try:
         if "gzip" in response.headers.get("Content-Encoding", ""):
             response_file = _SpooledFile(source_file = response)
+            if debug:
+                retval = _gunzip_file(response_file)
+                logging.debug(u"Client<--Server: {retval}".format(retval = repr(retval)))
+                return retval
             return _gunzip_file(response_file)
         else:
+            if debug:
+                retval = response.read()
+                logging.debug(u"Client<--Server: {retval}".format(retval = repr(retval)))
+                return retval
             return response.read()
     finally:
         response.close()
@@ -154,7 +170,8 @@ class HttpClient(object):
         content_type = None,
         cookies = None,
         gzipped = None,
-        ssl_context = None
+        ssl_context = None,
+        debug = None
     ):
         """
         :param: URL to the JSON-RPC handler on the HTTP-Server.
@@ -182,6 +199,8 @@ class HttpClient(object):
         :param ssl_context:  Specifies custom TLS/SSL settings for connection.
             Python >= 2.7.9
             See: https://docs.python.org/2/library/ssl.html#client-side-operation
+
+        :param debug: If `True` --> *logging.debug*
         """
 
         self.url = url
@@ -193,6 +212,7 @@ class HttpClient(object):
         self.cookies = cookies
         self.gzipped = gzipped
         self.ssl_context = ssl_context
+        self.debug = debug
 
 
     def call(self, method, *args, **kwargs):
@@ -227,7 +247,8 @@ class HttpClient(object):
             content_type = self.content_type,
             cookies = self.cookies,
             gzipped = self.gzipped,
-            ssl_context = self.ssl_context
+            ssl_context = self.ssl_context,
+            debug = self.debug
         )
         if not response_json:
             return

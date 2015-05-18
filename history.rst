@@ -16,6 +16,8 @@ Version 0.7.6
 
 - SSL-Import deleted
 
+- Http: Debugging of JSON messages added
+
 
 =============
 Version 0.7.5

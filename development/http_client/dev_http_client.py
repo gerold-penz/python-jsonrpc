@@ -11,11 +11,14 @@ sys.path.insert(0, APPDIR)
 
 
 import pyjsonrpc
+import logging
 
-rpc_client = pyjsonrpc.HttpClient("http://localhost:8080", gzipped = False)
+logging.basicConfig(level = logging.DEBUG)
+
+rpc_client = pyjsonrpc.HttpClient("http://localhost:8080", gzipped = False, debug = True)
 
 try:
-    print rpc_client.format_itx({
+    print rpc_client.format_it({
         "a.b": "A.B",
         "c.d": "C.D",
     })
