@@ -21,6 +21,7 @@ class RequestHandler(pyjsonrpc.HttpRequestHandler):
 
     @pyjsonrpc.rpcmethod
     def format_it(self, keys_and_values):
+
         retstr = u""
         for key, value in keys_and_values.items():
             retstr += u"{key}: {value}\n".format(key = key, value = value)

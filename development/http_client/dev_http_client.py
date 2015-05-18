@@ -15,7 +15,7 @@ import pyjsonrpc
 rpc_client = pyjsonrpc.HttpClient("http://localhost:8080", gzipped = False)
 
 try:
-    print rpc_client.format_it({
+    print rpc_client.format_itx({
         "a.b": "A.B",
         "c.d": "C.D",
     })

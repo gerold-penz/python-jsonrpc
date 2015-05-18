@@ -9,6 +9,15 @@ Near Future: Urllib3 for faster client requests
 
 
 =============
+Version 0.7.5
+=============
+
+2015-05-18
+
+- *rpclib*: Error-Logging --> *logging.error()*
+
+
+=============
 Version 0.7.4
 =============
 
