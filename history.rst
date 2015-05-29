@@ -9,6 +9,22 @@ Near Future: Urllib3 for faster client requests
 
 
 =============
+Version 0.7.7
+=============
+
+2015-05-29
+
+- Bug fixed: Library does not respect 0-value IDs
+
+  A request is a notification if:
+
+  - JSON-RPC version 2.0: no id
+  - JSON-RPC version 1.0: id is `null`
+
+  Thank you "lonelycode" and "pieceofchalk".
+
+
+=============
 Version 0.7.6
 =============
 

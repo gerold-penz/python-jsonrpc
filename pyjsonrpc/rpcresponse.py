@@ -57,9 +57,9 @@ class Response(Bunch):
         retdict = {}
         if self.jsonrpc:
             retdict["jsonrpc"] = self.jsonrpc
-        if not self.id is None:
+        if self.id is not None:
             retdict["id"] = self.id
-        if not self.result is None:
+        if self.result is not None:
             retdict["result"] = self.result
 
         # Error

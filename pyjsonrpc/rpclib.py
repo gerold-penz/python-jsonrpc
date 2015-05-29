@@ -115,7 +115,7 @@ class JsonRpc(object):
                 result = rpc_function(*positional_params, **named_params)
                 # No return value is OK if we don´t have an ID (=notification)
                 if result is None:
-                    if id:
+                    if bool(id) or bool(unicode(id)) if id is not None else False:
                         error = rpcerror.InternalError(
                             data = u"No result from JSON-RPC method."
                         )
@@ -212,7 +212,10 @@ class JsonRpc(object):
         # Convert responses to dictionaries and filter it
         responses_ = []
         for response in responses:
-            if response.id:
+            if (
+                bool(response.id) or
+                bool(unicode(response.id)) if response.id is not None else False
+            ):
                 responses_.append(response.to_dict())
         responses = responses_
 
