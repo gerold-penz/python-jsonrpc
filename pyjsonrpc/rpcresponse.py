@@ -96,7 +96,13 @@ class Response(Bunch):
         error = response_dict.get("error")
         if error:
             result = None
-            if "code" in error:
+            if isinstance(error, basestring):
+                error = cls.Error(
+                    code = InternalError.code,
+                    message = error,
+                    data = None
+                )
+            elif "code" in error:
                 # JSON-RPC Standard Error
                 error = cls.Error(
                     code = error.get("code"),
