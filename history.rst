@@ -9,6 +9,16 @@ Near Future: Urllib3 for faster client requests
 
 
 =============
+Version 0.7.8
+=============
+
+2015-07-10
+
+- Pull request by ilius merged: rpcresponse.py: handle string error;
+  Thank you ilius!
+
+
+=============
 Version 0.7.7
 =============
 
