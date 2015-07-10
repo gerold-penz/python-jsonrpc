@@ -15,7 +15,11 @@ Version 0.7.8
 2015-07-10
 
 - Pull request by ilius merged: rpcresponse.py: handle string error;
-  Thank you ilius!
+  Thank you, ilius!
+
+- Never again: Raising an error if a RPC-method returns `None`.
+  Now, it is OK if the return value of a function is `None`.
+  Until now only notifications were allowed to return `None`.
 
 
 =============

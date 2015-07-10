@@ -113,31 +113,9 @@ class JsonRpc(object):
             try:
                 rpc_function = self.methods[method]
                 result = rpc_function(*positional_params, **named_params)
-                # No return value is OK if we don´t have an ID (=notification)
-                if result is None:
-                    if bool(id) or bool(unicode(id)) if id is not None else False:
-                        error = rpcerror.InternalError(
-                            data = u"No result from JSON-RPC method."
-                        )
-                        responses.append(
-                            rpcresponse.Response(
-                                jsonrpc = jsonrpc,
-                                id = id,
-                                error = error
-                            )
-                        )
-                        # Logging error
-                        logging.error(
-                            u"{error} -- {data}".format(
-                                error = unicode(error),
-                                data = repr(error.data)
-                            )
-                        )
-                else:
-                    # Successful response
-                    responses.append(
-                        rpcresponse.Response(jsonrpc = jsonrpc, id = id, result = result)
-                    )
+                responses.append(
+                    rpcresponse.Response(jsonrpc = jsonrpc, id = id, result = result)
+                )
             except TypeError, err:
                 traceback_info = "".join(traceback.format_exception(*sys.exc_info()))
                 if "takes exactly" in unicode(err) and "arguments" in unicode(err):

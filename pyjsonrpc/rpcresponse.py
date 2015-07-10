@@ -97,6 +97,7 @@ class Response(Bunch):
         if error:
             result = None
             if isinstance(error, basestring):
+                # String Error
                 error = cls.Error(
                     code = InternalError.code,
                     message = error,
