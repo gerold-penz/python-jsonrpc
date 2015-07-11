@@ -8,6 +8,16 @@ by Gerold Penz 2013-2015
 Near Future: Urllib3 for faster client requests
 
 
+==============
+Version 0.7.10
+==============
+
+2015-07-11
+
+- *rpcjson.loads* now supports Python 2.6.
+  Changed in Python version 2.7: Added support for object_pairs_hook.
+
+
 =============
 Version 0.7.9
 =============

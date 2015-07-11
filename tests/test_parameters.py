@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 # coding: utf-8
+"""
+Nosetests
+"""
+
 
 import pyjsonrpc
 
 
 def add(a, b):
-    # raise RuntimeError("Test Exception")
     return a + b
 
 

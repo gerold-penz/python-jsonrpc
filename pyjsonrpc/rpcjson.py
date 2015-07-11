@@ -57,29 +57,17 @@ def loads(s):
     Uses the predefined default settings.
     """
 
-    return _json.loads(
-        s,
-        encoding = loads_encoding,
-        cls = loads_cls,
-        object_hook = loads_object_hook,
-        parse_float = loads_parse_float,
-        parse_int = loads_parse_int,
-        parse_constant = loads_parse_constant,
-        object_pairs_hook = loads_object_pairs_hook
-    )
+    # Named parameters for *loads*
+    kwargs = {
+        "encoding": loads_encoding,
+        "cls": loads_cls,
+        "object_hook": loads_object_hook,
+        "parse_float": loads_parse_float,
+        "parse_int": loads_parse_int,
+        "parse_constant": loads_parse_constant
+    }
+    if loads_object_pairs_hook is not None:
+        kwargs["object_pairs_hook"] = loads_object_pairs_hook
 
-
-########################
-# OLD IMPORTS
-########################
-# try:
-#     import jsonlib2 as json
-#     JsonParseError = json.ReadError
-# except ImportError:
-#     try:
-#         import simplejson as json
-#         JsonParseError = json.JSONDecodeError
-#     except ImportError:
-#         import json
-#         JsonParseError = ValueError
-########################
+    # Finished
+    return _json.loads(s, **kwargs)
