@@ -6,7 +6,6 @@ by Gerold Penz 2013-2015
 
 
 - ToDo: Urllib3 for faster client requests
-- ToDo: Wheel-Setup (http://pythonwheels.com/)
 
 
 ==============
@@ -17,6 +16,8 @@ Version 0.7.10
 
 - *rpcjson.loads* now supports Python 2.6.
   Changed in Python version 2.7: Added support for object_pairs_hook.
+
+- Wheel setup added (http://pythonwheels.com/).
 
 
 =============

@@ -7,26 +7,25 @@ Nosetests for *rpcjson.py*.
 import pyjsonrpc.rpcjson
 
 
+EXAMPLE_LIST = [1, u"a", u"Ä"]
+EXAMPLE_LIST_JSON = '[1, "a", "\u00c4"]'
+
+EXAMPLE_DICT = {"a": u"Ä"}
+EXAMPLE_DICT_JSON = '{"a": "\u00c4"}'
+
+
 def test_dumps_list():
-    example_list = [1, u"a", u"Ä"]
-    example_json = '[1, "a", "\u00c4"]'
-    assert pyjsonrpc.rpcjson.dumps(example_list) == example_json
+    assert pyjsonrpc.rpcjson.dumps(EXAMPLE_LIST) == EXAMPLE_LIST_JSON
 
 
 def test_dumps_dict():
-    example_dict = {"a": u"Ä"}
-    example_json = '{"a": "\u00c4"}'
-    assert pyjsonrpc.rpcjson.dumps(example_dict) == example_json
+    assert pyjsonrpc.rpcjson.dumps(EXAMPLE_DICT) == EXAMPLE_DICT_JSON
 
 
 def test_loads_list():
-    example_json = '[1, "a", "\u00c4"]'
-    example_list = [1, u"a", u"Ä"]
-    assert pyjsonrpc.rpcjson.loads(example_json) == example_list
+    assert pyjsonrpc.rpcjson.loads(EXAMPLE_LIST_JSON) == EXAMPLE_LIST
 
 
 def test_loads_dict():
-    example_json = '{"a": "\u00c4"}'
-    example_dict = {"a": u"Ä"}
-    assert pyjsonrpc.rpcjson.loads(example_json) == example_dict
+    assert pyjsonrpc.rpcjson.loads(EXAMPLE_DICT_JSON) == EXAMPLE_DICT
 
