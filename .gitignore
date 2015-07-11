@@ -21,4 +21,5 @@
 *.rdb
 log
 /.project
+build
 
