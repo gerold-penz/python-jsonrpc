@@ -9,6 +9,16 @@ Near Future: Urllib3 for faster client requests
 
 
 =============
+Version 0.7.9
+=============
+
+2015-07-11
+
+- Nosetests included and Travis (https://travis-ci.org/) aktivated.
+  Thank you *scls19fr*. Extended tests will follow.
+
+
+=============
 Version 0.7.8
 =============
 
