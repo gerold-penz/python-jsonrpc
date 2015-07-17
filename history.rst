@@ -14,7 +14,9 @@ Version 0.7.11
 
 2015-07-17
 
-- Nosetests for *rpcerror.py* added
+- Nosetests for *rpcerror.py* added.
+
+- Nosetests for *rpcrequest.py* added (not finished yet).
 
 
 ==============
