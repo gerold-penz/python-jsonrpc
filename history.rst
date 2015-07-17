@@ -9,6 +9,15 @@ by Gerold Penz 2013-2015
 
 
 ==============
+Version 0.7.11
+==============
+
+2015-07-17
+
+- Nosetests for *rpcerror.py* added
+
+
+==============
 Version 0.7.10
 ==============
 
