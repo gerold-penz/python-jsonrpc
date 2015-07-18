@@ -14,7 +14,11 @@ Version 0.7.12
 
 2015-07-18
 
-- New method *rpcrequest.Request.to_dict*
+- New method *rpcrequest.Request.to_dict()*
+
+- New method *rpcrequest.Request.from_dict()*
+
+- Nosetests added
 
 
 ==============
@@ -25,7 +29,7 @@ Version 0.7.11
 
 - Nosetests for *rpcerror.py* added.
 
-- Nosetests for *rpcrequest.py* added (not finished yet).
+- Nosetests for *rpcrequest.py* added.
 
 
 ==============

@@ -133,6 +133,22 @@ class Request(Bunch):
         return self.toDict()
 
 
+    @classmethod
+    def from_dict(cls, data):
+        """
+        Returns a request-object, created from Dictionary.
+
+        :rtype: Request
+        """
+
+        return cls(
+            jsonrpc = data.get("jsonrpc"),
+            method = data.get("method"),
+            id = data.get("id"),
+            params = data.get("params")
+        )
+
+
 # Alias for *Request.loads*
 parse_request_json = Request.from_string
 
