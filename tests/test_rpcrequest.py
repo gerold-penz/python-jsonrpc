@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 """
-Nosetests for *rpcerror.py*.
+Nosetests for *rpcrequest.py*.
 """
 
 import json
@@ -98,3 +98,17 @@ def test_create_request_json_with_positional_and_named_params():
     }, u"Unexpected result"
 
 
+def test_aliases():
+    assert pyjsonrpc.rpcrequest.create_request_string
+    assert pyjsonrpc.rpcrequest.parse_request_json
+
+
+def test_request_with_positional_params():
+    request = pyjsonrpc.rpcrequest.Request(
+        method = TESTMETHOD,
+        id = TESTID,
+        params = [1, 2]
+    )
+    print request.to_dict()
+
+test_request_with_positional_params()

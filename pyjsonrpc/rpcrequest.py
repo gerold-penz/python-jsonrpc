@@ -125,13 +125,21 @@ class Request(Bunch):
     dumps = to_string
 
 
+    def to_dict(self):
+        """
+        Returns the request as dictionary
+        """
+
+        return self.toDict()
+
+
 # Alias for *Request.loads*
 parse_request_json = Request.from_string
 
 
 def create_request_dict(method, *args, **kwargs):
     """
-    Returns a JSON-RPC-Dictionary for a method
+    Returns a JSON-RPC-dictionary for a method
 
     :param method: Name of the method
     :param args: Positional parameters

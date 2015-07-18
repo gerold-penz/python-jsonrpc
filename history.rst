@@ -9,6 +9,15 @@ by Gerold Penz 2013-2015
 
 
 ==============
+Version 0.7.12
+==============
+
+2015-07-18
+
+- New method *rpcrequest.Request.to_dict*
+
+
+==============
 Version 0.7.11
 ==============
 
