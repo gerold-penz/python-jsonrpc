@@ -101,8 +101,8 @@ def http_request(
 
     # Authorization
     if username:
-        base64string = base64.encodestring("%s:%s" % (username, password))[:-1]
-        request.add_header("Authorization", "Basic %s" % base64string)
+        base64string = base64.b64encode("%s:%s" % (username, password)).strip()
+        request.add_unredirected_header("Authorization", "Basic %s" % base64string)
 
     # Cookies
     if cookies:

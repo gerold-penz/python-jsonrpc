@@ -8,6 +8,16 @@ by Gerold Penz 2013-2015
 - ToDo: Urllib3 for faster client requests
 
 
+
+=============
+Version 0.8.0
+=============
+
+2015-09-03
+
+- Changed the usage of username and password in HTTP-requests.
+
+
 ==============
 Version 0.7.12
 ==============
