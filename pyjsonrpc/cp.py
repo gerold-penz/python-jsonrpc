@@ -12,6 +12,7 @@ import httplib
 import rpclib
 import rpcrequest
 import cherrypy
+import logging
 import rpcjson
 import tools
 
@@ -82,6 +83,7 @@ class CherryPyJsonRpc(rpclib.JsonRpc):
             request_dict["id"] = id
             request_json = rpcjson.dumps(request_dict)
         else:
+            content_length = int(cherrypy.request.headers.get("Content-Length", 0))
             # POST
             if (
                 ("gzip" in cherrypy.request.headers.get("Content-Encoding", "")) and
@@ -90,7 +92,13 @@ class CherryPyJsonRpc(rpclib.JsonRpc):
                 spooled_file = tools.SpooledFile(source_file = cherrypy.request.body)
                 request_json = tools.gunzip_file(spooled_file)
             else:
-                request_json = cherrypy.request.body.read()
+                request_json = cherrypy.request.body.read(content_length)
+
+
+                # TEST
+                logging.info([content_length, repr(request_json)])
+
+
 
         # Call method
         result_string = self.call(request_json) or ""

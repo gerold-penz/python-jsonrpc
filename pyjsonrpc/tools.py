@@ -21,12 +21,12 @@ CHUNK_SIZE = 1024 * 1024  # 1 MiB
 
 
 def gzip_str_to_file(raw_text, dest_file):
-    with gzip.GzipFile(filename = "", mode = "wb", fileobj = dest_file) as gz:
+    with gzip.GzipFile(filename = "", mode = "w", fileobj = dest_file) as gz:
         gz.write(raw_text)
 
 
 def gunzip_file(source_file):
-    with gzip.GzipFile(filename = "", mode = "rb", fileobj = source_file) as gz:
+    with gzip.GzipFile(filename = "", mode = "r", fileobj = source_file) as gz:
         return gz.read()
 
 
