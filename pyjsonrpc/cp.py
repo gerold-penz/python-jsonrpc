@@ -94,12 +94,6 @@ class CherryPyJsonRpc(rpclib.JsonRpc):
             else:
                 request_json = cherrypy.request.body.read(content_length)
 
-
-                # TEST
-                logging.info([content_length, repr(request_json)])
-
-
-
         # Call method
         result_string = self.call(request_json) or ""
 

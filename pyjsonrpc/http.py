@@ -87,22 +87,14 @@ def http_request(
     request = urllib2.Request(url)
 
     if gzipped:
-        # # Compress content (SpooledTemporaryFile to reduce memory usage)
-        # spooled_file = tools.SpooledFile()
-        # tools.gzip_str_to_file(json_string, spooled_file)
-        # del json_string
-        # request.add_header("Content-Encoding", "gzip")
-        # request.add_header("Accept-Encoding", "gzip")
-        # spooled_file.seek(0)
-        # request.add_data(spooled_file)
-        #
-
-
-        # TEST
-        from cherrypy.lib.encoding import compress
-        request.add_data(str(compress(json_string, compress_level = 5)))
-
-
+        # Compress content (SpooledTemporaryFile to reduce memory usage)
+        spooled_file = tools.SpooledFile()
+        tools.gzip_str_to_file(json_string, spooled_file)
+        del json_string
+        request.add_header("Content-Encoding", "gzip")
+        request.add_header("Accept-Encoding", "gzip")
+        spooled_file.seek(0)
+        request.add_data(spooled_file)
     else:
         request.add_data(json_string)
 
