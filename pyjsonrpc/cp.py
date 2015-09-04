@@ -13,8 +13,10 @@ import rpclib
 import rpcrequest
 import cherrypy
 import rpcjson
+import tools
+
 # ToDo: Replace compress and decompress with faster methods
-from cherrypy.lib.encoding import compress, decompress
+from cherrypy.lib.encoding import compress
 
 
 # Recognize Google App Engine
@@ -81,11 +83,8 @@ class CherryPyJsonRpc(rpclib.JsonRpc):
             request_json = rpcjson.dumps(request_dict)
         else:
             # POST
-            if (
-                "gzip" in cherrypy.request.headers.get("Content-Encoding", "") and
-                not google_app_engine
-            ):
-                request_json = decompress(cherrypy.request.body.read())
+            if "gzip" in cherrypy.request.headers.get("Content-Encoding", ""):
+                request_json = tools.gunzip_file(cherrypy.request.body)
             else:
                 request_json = cherrypy.request.body.read()
 

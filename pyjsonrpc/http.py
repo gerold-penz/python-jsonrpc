@@ -20,6 +20,8 @@ import rpcresponse
 import rpcerror
 import rpclib
 import rpcjson
+import tools
+
 
 # Workaround for Google App Engine
 if "APPENGINE_RUNTIME" in os.environ:
@@ -86,8 +88,8 @@ def http_request(
 
     if gzipped:
         # Compress content (SpooledTemporaryFile to reduce memory usage)
-        spooled_file = _SpooledFile()
-        _gzip_str_to_file(json_string, spooled_file)
+        spooled_file = tools.SpooledFile()
+        tools.gzip_str_to_file(json_string, spooled_file)
         del json_string
         request.add_header("Content-Encoding", "gzip")
         request.add_header("Accept-Encoding", "gzip")
@@ -131,12 +133,12 @@ def http_request(
     # Analyze response and return result
     try:
         if "gzip" in response.headers.get("Content-Encoding", ""):
-            response_file = _SpooledFile(source_file = response)
+            response_file = tools.SpooledFile(source_file = response)
             if debug:
-                retval = _gunzip_file(response_file)
+                retval = tools.gunzip_file(response_file)
                 logging.debug(u"Client<--Server: {retval}".format(retval = repr(retval)))
                 return retval
-            return _gunzip_file(response_file)
+            return tools.gunzip_file(response_file)
         else:
             if debug:
                 retval = response.read()
@@ -457,7 +459,7 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
 
         if "gzip" in content_encoding and not google_app_engine:
             # Decompress
-            with _SpooledFile() as gzipped_file:
+            with tools.SpooledFile() as gzipped_file:
                 # ToDo: read chunks
                 # if content_length <= CHUNK_SIZE:
                 #     gzipped_file.write(self.rfile.read(content_length))
@@ -483,7 +485,7 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
 
         if "gzip" in accept_encoding:
             # Gzipped
-            content = _SpooledFile()
+            content = tools.SpooledFile()
             with gzip.GzipFile(filename = "", mode = "wb", fileobj = content) as gz:
                 gz.write(response_json)
             content.seek(0)
@@ -553,50 +555,5 @@ def handle_cgi_request(methods = None):
     # Return result
     print response_json
 
-
-def _gzip_str_to_file(raw_text, dest_file):
-    with gzip.GzipFile(filename = "", mode = "wb", fileobj = dest_file) as gz:
-        gz.write(raw_text)
-
-
-def _gunzip_file(source_file):
-    with gzip.GzipFile(filename = "", mode = "rb", fileobj = source_file) as gz:
-        return gz.read()
-
-
-class _SpooledFile(TmpFile):
-    """
-    Spooled temporary file.
-
-    StringIO with fallback to temporary file if size > MAX_SIZE_IN_MEMORY.
-    """
-
-    def __init__(
-        self,
-        max_size = MAX_SIZE_IN_MEMORY,
-        mode = "w+b",
-        source_file = None,
-        *args, **kwargs
-    ):
-
-        # Init
-        if google_app_engine:
-            TmpFile.__init__(self)
-        else:
-            TmpFile.__init__(self, max_size = max_size, mode = mode)
-
-        if source_file:
-            for chunk in iter(lambda: source_file.read(CHUNK_SIZE), ""):
-                self.write(chunk)
-            self.seek(0)
-
-
-    def __len__(self):
-        current_pos = self.tell()
-        try:
-            self.seek(0, 2)
-            return self.tell()
-        finally:
-            self.seek(current_pos)
 
 
