@@ -11,7 +11,6 @@ import os
 import httplib
 import rpclib
 import rpcrequest
-import logging
 import cherrypy
 import rpcjson
 import tools

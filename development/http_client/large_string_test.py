@@ -12,7 +12,7 @@ sys.path.insert(0, APPDIR)
 
 import pyjsonrpc
 
-rpc_client = pyjsonrpc.HttpClient("http://localhost:8080", gzipped = True)
+rpc_client = pyjsonrpc.HttpClient("http://localhost:8080", gzipped = False)
 
 
 # Create very large string
