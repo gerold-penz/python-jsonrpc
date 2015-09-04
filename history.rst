@@ -16,6 +16,8 @@ Version 0.8.1
 
 - Error repared in *_SpooledFile* in Google App Engine
 
+- Gzip changes
+
 
 =============
 Version 0.8.0

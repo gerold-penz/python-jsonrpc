@@ -455,7 +455,7 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
         content_encoding = self.headers.get("Content-Encoding", "")
         accept_encoding = self.headers.get("Accept-Encoding", "")
 
-        if "gzip" in content_encoding:
+        if "gzip" in content_encoding and not google_app_engine:
             # Decompress
             with _SpooledFile() as gzipped_file:
                 # ToDo: read chunks
@@ -472,6 +472,14 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
                     request_json = gz.read()
         else:
             request_json = self.rfile.read(content_length)
+
+
+        print
+        print "-" * 100
+        print request_json
+        print "-" * 100
+        print
+
 
         # Call
         response_json = self.call(request_json) or ""
@@ -555,12 +563,12 @@ def handle_cgi_request(methods = None):
 
 
 def _gzip_str_to_file(raw_text, dest_file):
-    with gzip.GzipFile(filename = "", fileobj = dest_file) as gz:
+    with gzip.GzipFile(filename = "", mode = "wb", fileobj = dest_file) as gz:
         gz.write(raw_text)
 
 
 def _gunzip_file(source_file):
-    with gzip.GzipFile(filename = "", mode = "r", fileobj = source_file) as gz:
+    with gzip.GzipFile(filename = "", mode = "rb", fileobj = source_file) as gz:
         return gz.read()
 
 
