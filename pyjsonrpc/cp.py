@@ -7,6 +7,7 @@ http://www.cherrypy.org/
 http://cherrypy.readthedocs.org/
 """
 
+import os
 import httplib
 import rpclib
 import rpcrequest
@@ -15,9 +16,16 @@ import rpcjson
 # ToDo: Replace compress and decompress with faster methods
 from cherrypy.lib.encoding import compress, decompress
 
+
+# Recognize Google App Engine
+if "APPENGINE_RUNTIME" in os.environ:
+    google_app_engine = True
+else:
+    google_app_engine = False
+
+
 # for simpler usage
 rpcmethod = rpclib.rpcmethod
-
 
 
 def _no_body_processor_tool():
@@ -73,7 +81,10 @@ class CherryPyJsonRpc(rpclib.JsonRpc):
             request_json = rpcjson.dumps(request_dict)
         else:
             # POST
-            if "gzip" in cherrypy.request.headers.get("Content-Encoding", ""):
+            if (
+                "gzip" in cherrypy.request.headers.get("Content-Encoding", "") and
+                not google_app_engine
+            ):
                 request_json = decompress(cherrypy.request.body.read())
             else:
                 request_json = cherrypy.request.body.read()
@@ -85,11 +96,13 @@ class CherryPyJsonRpc(rpclib.JsonRpc):
         cherrypy.response.headers["Cache-Control"] = "no-cache"
         cherrypy.response.headers["Pragma"] = "no-cache"
         cherrypy.response.headers["Content-Type"] = "application/json"
-        if "gzip" in cherrypy.request.headers.get("Accept-Encoding", ""):
+        if (
+            "gzip" in cherrypy.request.headers.get("Accept-Encoding", "") and
+            not google_app_engine
+        ):
             # Gzip-compressed
             cherrypy.response.headers["Content-Encoding"] = "gzip"
             return compress(result_string, compress_level = 5)
         else:
             # uncompressed
             return result_string
-

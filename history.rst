@@ -18,6 +18,8 @@ Version 0.8.1
 
 - Gzip changes
 
+- Recognize Google App Engine
+
 
 =============
 Version 0.8.0
