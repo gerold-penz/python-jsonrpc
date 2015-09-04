@@ -8,6 +8,14 @@ by Gerold Penz 2013-2015
 - ToDo: Urllib3 for faster client requests
 
 
+=============
+Version 0.8.1
+=============
+
+2015-09-04
+
+- Error repared in *_SpooledFile* in Google App Engine
+
 
 =============
 Version 0.8.0

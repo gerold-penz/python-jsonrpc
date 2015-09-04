@@ -581,7 +581,7 @@ class _SpooledFile(TmpFile):
 
         # Init
         if google_app_engine:
-            TmpFile.__init__(self, mode = mode)
+            TmpFile.__init__(self)
         else:
             TmpFile.__init__(self, max_size = max_size, mode = mode)
 
