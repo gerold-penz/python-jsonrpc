@@ -467,19 +467,11 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
                 gzipped_file.write(self.rfile.read(content_length))
                 gzipped_file.seek(0)
                 with gzip.GzipFile(
-                    filename = "", mode = "r", fileobj = gzipped_file
+                    filename = "", mode = "rb", fileobj = gzipped_file
                 ) as gz:
                     request_json = gz.read()
         else:
             request_json = self.rfile.read(content_length)
-
-
-        print
-        print "-" * 100
-        print request_json
-        print "-" * 100
-        print
-
 
         # Call
         response_json = self.call(request_json) or ""
@@ -492,7 +484,7 @@ class HttpRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, rpclib.JsonRpc):
         if "gzip" in accept_encoding:
             # Gzipped
             content = _SpooledFile()
-            with gzip.GzipFile(filename = "", mode = "w", fileobj = content) as gz:
+            with gzip.GzipFile(filename = "", mode = "wb", fileobj = content) as gz:
                 gz.write(response_json)
             content.seek(0)
 
