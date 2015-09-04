@@ -11,6 +11,7 @@ import os
 import httplib
 import rpclib
 import rpcrequest
+import logging
 import cherrypy
 import rpcjson
 import tools
@@ -83,8 +84,12 @@ class CherryPyJsonRpc(rpclib.JsonRpc):
             request_json = rpcjson.dumps(request_dict)
         else:
             # POST
-            if "gzip" in cherrypy.request.headers.get("Content-Encoding", ""):
-                request_json = tools.gunzip_file(cherrypy.request.body)
+            if (
+                ("gzip" in cherrypy.request.headers.get("Content-Encoding", "")) and
+                not google_app_engine
+            ):
+                spooled_file = tools.SpooledFile(source_file = cherrypy.request.body)
+                request_json = tools.gunzip_file(spooled_file)
             else:
                 request_json = cherrypy.request.body.read()
 
@@ -96,7 +101,7 @@ class CherryPyJsonRpc(rpclib.JsonRpc):
         cherrypy.response.headers["Pragma"] = "no-cache"
         cherrypy.response.headers["Content-Type"] = "application/json"
         if (
-            "gzip" in cherrypy.request.headers.get("Accept-Encoding", "") and
+            ("gzip" in cherrypy.request.headers.get("Accept-Encoding", "")) and
             not google_app_engine
         ):
             # Gzip-compressed
