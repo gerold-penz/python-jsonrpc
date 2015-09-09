@@ -12,7 +12,6 @@ import httplib
 import rpclib
 import rpcrequest
 import cherrypy
-import logging
 import rpcjson
 import tools
 
