@@ -66,3 +66,19 @@ class SpooledFile(TmpFile):
             self.seek(current_pos)
 
 
+def safe_unicode(value):
+
+    if isinstance(value, unicode):
+        return value
+
+    try:
+        return unicode(value)
+    except UnicodeDecodeError:
+        try:
+            return unicode(value, "utf-8")
+        except UnicodeDecodeError:
+            return unicode(value, "iso-8859-15", "ignore")
+        except StandardError, err:
+            return unicode(repr(value))
+    except StandardError, err:
+        return unicode(repr(value))

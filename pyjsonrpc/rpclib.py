@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import sys
-import traceback
 import logging
 import rpcrequest
 import rpcresponse
 import rpcerror
 import rpcjson
+from tools import safe_unicode
 
 
 def rpcmethod(func):
@@ -99,8 +98,8 @@ class JsonRpc(object):
                 # Logging error
                 logging.error(
                     u"{error} -- {data}".format(
-                        error = unicode(error),
-                        data = repr(error.data)
+                        error = safe_unicode(error),
+                        data = safe_unicode(error.data)
                     )
                 )
 
@@ -117,8 +116,8 @@ class JsonRpc(object):
                     rpcresponse.Response(jsonrpc = jsonrpc, id = id, result = result)
                 )
             except TypeError, err:
-                traceback_info = "".join(traceback.format_exception(*sys.exc_info()))
-                if "takes exactly" in unicode(err) and "arguments" in unicode(err):
+                traceback_info = rpcerror.get_traceback_string()
+                if "takes exactly" in safe_unicode(err) and "arguments" in safe_unicode(err):
                     error = rpcerror.InvalidParams(data = traceback_info)
                     responses.append(
                         rpcresponse.Response(
@@ -130,8 +129,8 @@ class JsonRpc(object):
                     # Logging error
                     logging.error(
                         u"{error} -- {data}".format(
-                            error = unicode(error),
-                            data = repr(error.data)
+                            error = safe_unicode(error),
+                            data = safe_unicode(error.data)
                         )
                     )
                 else:
@@ -146,8 +145,8 @@ class JsonRpc(object):
                     # Logging error
                     logging.error(
                         u"{error} -- {data}".format(
-                            error = unicode(error),
-                            data = repr(error.data)
+                            error = safe_unicode(error),
+                            data = safe_unicode(error.data)
                         )
                     )
             except rpcerror.JsonRpcError, err:
@@ -161,17 +160,20 @@ class JsonRpc(object):
                 # Logging error
                 logging.error(
                     u"{error} -- {data}".format(
-                        error = unicode(err),
-                        data = repr(err.data)
+                        error = safe_unicode(err),
+                        data = safe_unicode(err.data)
                     )
                 )
-            except BaseException, err:
-                traceback_info = "".join(traceback.format_exception(*sys.exc_info()))
+            except StandardError, err:
+                traceback_info = rpcerror.get_traceback_string()
                 if hasattr(err, "data"):
                     error_data = err.data
                 else:
                     error_data = None
-                error = rpcerror.InternalError(data = error_data or traceback_info)
+                error = rpcerror.InternalError(
+                    message = safe_unicode(err),
+                    data = safe_unicode(error_data or traceback_info)
+                )
                 responses.append(
                     rpcresponse.Response(
                         jsonrpc = jsonrpc,
@@ -182,8 +184,8 @@ class JsonRpc(object):
                 # Logging error
                 logging.error(
                     u"{error} -- {data}".format(
-                        error = unicode(error),
-                        data = repr(error.data)
+                        error = safe_unicode(error),
+                        data = safe_unicode(error.data)
                     )
                 )
 

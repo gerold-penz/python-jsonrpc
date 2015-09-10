@@ -9,6 +9,18 @@ by Gerold Penz 2013-2015
 
 
 =============
+Version 0.8.2
+=============
+
+2015-09-10
+
+- The new function *get_traceback_string* returns the traceback string of the
+  last error.
+
+- Error handling changed
+
+
+=============
 Version 0.8.1
 =============
 

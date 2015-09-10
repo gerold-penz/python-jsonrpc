@@ -13,6 +13,7 @@ import rpclib
 import rpcrequest
 import cherrypy
 import rpcjson
+import rpcerror
 import tools
 
 # ToDo: Replace compress and decompress with faster methods

@@ -5,6 +5,22 @@
 jsonrpcerrors = {}
 
 
+def get_traceback_string():
+    """
+    Returns the traceback unicode string for the last error
+    """
+
+    from sys import exc_info as _exc_info
+    exc = _exc_info()
+    if exc == (None, None, None):
+        return ""
+    import traceback
+    tb = "".join(traceback.format_exception(*exc))
+
+    # Fertig
+    return unicode(tb, errors = "replace")
+
+
 class JsonRpcError(RuntimeError):
     code = None
     message = None
