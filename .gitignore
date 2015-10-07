@@ -7,13 +7,12 @@
 *.so
 *.so.[0-9]*
 *.a
-*.pyc
-*.pyo
+*.py[cod]
 *.rej
 *~
 #*#
 .#*
-.*.swp
+.*.sw[po]
 .DS_Store
 *.egg-info
 *.aof
@@ -22,4 +21,4 @@
 log
 /.project
 build
-
+.coverage

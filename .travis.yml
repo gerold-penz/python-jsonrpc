@@ -2,11 +2,12 @@ language: python
 python:
   - "2.6"
   - "2.7"
+  - "pypy"
 
-# command to install dependencies
 install:
-  - "pip install nose"
-  - "pip install ."
+  - pip install -r requirements-test.txt
+  - pip install coveralls
+  - pip install .
 
-# command to run tests
-script: "nosetests -v"
+script: nosetests -v --with-coverage --cover-package=pyjsonrpc
+after_success: coveralls $COVERALLS_OPTION
