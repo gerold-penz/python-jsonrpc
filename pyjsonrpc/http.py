@@ -122,7 +122,7 @@ def http_request(
             response = urllib2.urlopen(
                 request, timeout = timeout, context = ssl_context
             )
-        except TypeError, err:
+        except TypeError as err:
             if u"context" in unicode(err):
                 raise NotImplementedError(u"SSL-Context needs Python >= 2.7.9")
             else:
