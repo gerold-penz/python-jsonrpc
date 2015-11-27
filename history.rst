@@ -24,6 +24,8 @@ Version 0.8.3
 
 - Replaced ``except <Error>, err`` with ``except <Error> as err``
 
+- Version-Push: Version 0.8.3
+
 
 =============
 Version 0.8.2
