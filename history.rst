@@ -18,7 +18,9 @@ Version 0.8.3
 
 - Added badges to README & Python version to Travis
 
-- Mergde pull request #35 from ZuluPro
+- Merged pull request #35 from ZuluPro
+
+- Images in README commented out
 
 
 =============
