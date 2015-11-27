@@ -22,6 +22,8 @@ Version 0.8.3
 
 - Images in README commented out
 
+- Replaced ``except <Error>, err`` with ``except <Error> as err``
+
 
 =============
 Version 0.8.2
