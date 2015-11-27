@@ -9,6 +9,19 @@ by Gerold Penz 2013-2015
 
 
 =============
+Version 0.8.3
+=============
+
+2015-11-27
+
+- Added coverage
+
+- Added badges to README & Python version to Travis
+
+- Mergde pull request #35 from ZuluPro
+
+
+=============
 Version 0.8.2
 =============
 

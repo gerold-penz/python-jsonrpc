@@ -12,6 +12,7 @@ Python JSON-RPC Client Server Library With Additional Support for BaseHTTPServer
 .. image:: https://coveralls.io/repos/gerold-penz/python-jsonrpc/badge.svg?branch=master&service=github
          :target: https://coveralls.io/github/gerold-penz/python-jsonrpc?branch=master
 
+
 ============
 Installation
 ============
