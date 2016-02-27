@@ -7,8 +7,6 @@ by Gerold Penz 2013-2016
 
 - ToDo: Urllib3 for faster client requests
 
-- ToDo: Notifications must not have an ID-Field
-
 
 =============
 Version 0.8.4

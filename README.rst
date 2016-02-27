@@ -63,10 +63,10 @@ HTTP Server Example
 
     class RequestHandler(pyjsonrpc.HttpRequestHandler):
 
-      @pyjsonrpc.rpcmethod
-      def add(self, a, b):
-          """Test method"""
-          return a + b
+        @pyjsonrpc.rpcmethod
+        def add(self, a, b):
+            """Test method"""
+            return a + b
 
 
     # Threading HTTP-Server
