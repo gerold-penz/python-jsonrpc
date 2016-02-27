@@ -288,15 +288,17 @@ class HttpClient(object):
 
         methods = []
 
-        # Create JSON-RPC-request
+        # Create JSON-RPC-request (without ID)
         if isinstance(method, basestring):
             request_dict = rpcrequest.create_request_dict(method, *args, **kwargs)
-            request_dict["id"] = None
+            del request_dict["id"]
             methods.append(request_dict)
         else:
             assert not args and not kwargs
             for request_dict in method:
-                request_dict["id"] = None
+                for delkey in ["id", "ID", "Id"]:
+                    if delkey in request_dict:
+                        del request_dict[delkey]
                 methods.append(request_dict)
 
         # Redirect to call-method

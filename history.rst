@@ -2,10 +2,23 @@
 Python JSON-RPC Client Server Library With Additional Support for BaseHTTPServer, CherryPy And CGI
 ##################################################################################################
 
-by Gerold Penz 2013-2015
+by Gerold Penz 2013-2016
 
 
 - ToDo: Urllib3 for faster client requests
+
+- ToDo: Notifications must not have an ID-Field
+
+
+=============
+Version 0.8.4
+=============
+
+2016-02-27
+
+- Notifications must not have an ID-field. Until now the *notify*-method had
+  an ID-field with `null`-value. Since now notifications will not have an
+  ID-field. Thank you brandonkimbk! Issue #41 closed.
 
 
 =============
