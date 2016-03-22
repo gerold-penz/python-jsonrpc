@@ -9,6 +9,17 @@ by Gerold Penz 2013-2016
 
 
 =============
+Version 0.8.5
+=============
+
+2016-03-22
+
+
+- Error handling changed: Used *Exception* in place of *StandardError*
+  (earlier I used *BaseException*).
+
+
+=============
 Version 0.8.4
 =============
 

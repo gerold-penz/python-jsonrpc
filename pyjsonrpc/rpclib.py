@@ -164,7 +164,7 @@ class JsonRpc(object):
                         data = safe_unicode(err.data)
                     )
                 )
-            except StandardError as err:
+            except Exception as err:
                 traceback_info = rpcerror.get_traceback_string()
                 if hasattr(err, "data"):
                     error_data = err.data
