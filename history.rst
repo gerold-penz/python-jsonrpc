@@ -9,6 +9,29 @@ by Gerold Penz 2013-2016
 
 
 =============
+Version 0.8.6
+=============
+
+2016-04-07
+
+- Automatic conversion from Date and DateTime to ISO string
+
+- Automatic conversion from ISO string to Date, DateTime and
+  Google App Engine NDB - Key and BlobKey
+
+- New functions for conversion
+
+  - *rpcjson.date_time_decoder()*
+
+  - *rpcjson.date_time_and_ndb_encoder()*
+
+  - *rpcjson.activate_date_time_and_ndb_conversion()*
+
+- New examples for using automatic conversion between ISO-string and
+  Date/DateTime added.
+
+
+=============
 Version 0.8.5
 =============
 
