@@ -9,6 +9,18 @@ by Gerold Penz 2013-2016
 
 
 =============
+Version 0.9.0
+=============
+
+2016-04-08
+
+- Automatic conversion from ISO string to Date, DateTime and
+  Google App Engine NDB - Key and BlobKey
+
+- Version 0.9.0 because of the new feature.
+
+
+=============
 Version 0.8.6
 =============
 

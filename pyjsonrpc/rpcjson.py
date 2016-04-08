@@ -4,15 +4,26 @@
 import json as _json
 import datetime
 try:
+    # Google App Engine NDB - for automatic Key and BlobKey conversion
     from google.appengine.ext import ndb
 except ImportError:
     ndb = None
 
 
+# Date ISO formats
 ISO8601_10_DIGITS = "%Y-%m-%d"
-ISO8601_19_DIGITS = "%Y-%m-%dT%H:%M:%S"
-ISO8601_20_DIGITS = "%Y-%m-%dT%H:%M:%SZ"
 
+ISO8601_19_DIGITS = "%Y-%m-%dT%H:%M:%S"
+ISO8601_19_DIGITS_V2 = "%Y-%m-%d %H:%M:%S"
+
+ISO8601_17_DIGITS = "%Y-%m-%dT%H%M%S"
+ISO8601_17_DIGITS_V2 = "%Y-%m-%d %H%M%S"
+
+ISO8601_20_DIGITS = "%Y-%m-%dT%H:%M:%SZ"
+ISO8601_20_DIGITS_V2 = "%Y-%m-%d %H:%M:%SZ"
+
+
+# Different JSON parsers have got different ParseError objects.
 JsonParseError = ValueError
 
 
@@ -95,22 +106,52 @@ def date_time_decoder(obj):
     """
 
     if isinstance(obj, basestring):
-        if len(obj) == 10:
+
+        # Check min length and if "-" exists
+        check_string = obj[0:10]
+        if len(check_string) < 10:
+            return obj
+        if not check_string[4] == "-":
+            return obj
+        if not check_string[7] == "-":
+            return obj
+
+        # Get length
+        obj_len = len(obj)
+
+        # Length checks ordered by priority
+        if obj_len == 10:
             try:
                 date_obj = datetime.datetime.strptime(obj, ISO8601_10_DIGITS)
                 return date_obj.date()
             except (ValueError, TypeError):
                 return obj
-        elif len(obj) == 19:
+        elif obj_len == 19:
             try:
                 return datetime.datetime.strptime(obj, ISO8601_19_DIGITS)
             except (ValueError, TypeError):
-                return obj
-        elif len(obj) == 20:
+                try:
+                    return datetime.datetime.strptime(obj, ISO8601_19_DIGITS_V2)
+                except (ValueError, TypeError):
+                    return obj
+        elif obj_len == 17:
+            try:
+                return datetime.datetime.strptime(obj, ISO8601_17_DIGITS)
+            except (ValueError, TypeError):
+                try:
+                    return datetime.datetime.strptime(obj, ISO8601_17_DIGITS_V2)
+                except (ValueError, TypeError):
+                    return obj
+        elif obj_len == 20:
             try:
                 return datetime.datetime.strptime(obj, ISO8601_20_DIGITS)
             except (ValueError, TypeError):
-                return obj
+                try:
+                    return datetime.datetime.strptime(obj, ISO8601_20_DIGITS_V2)
+                except (ValueError, TypeError):
+                    return obj
+        else:
+            return obj
 
     elif isinstance(obj, list):
         for index, value in enumerate(obj):
@@ -123,14 +164,14 @@ def date_time_decoder(obj):
     return obj
 
 
-def date_time_and_ndb_encoder(obj):
+def iso_date_and_ndb_encoder(obj):
     """
     Encoder for date, datetime, Google App Engine NDB - Key and BlobKey
 
     Global activation::
 
         import pyjsonrpc.rpcjson
-        pyjsonrpc.rpcjson.dumps_default = pyjsonrpc.rpcjson.date_time_and_ndb_encoder
+        pyjsonrpc.rpcjson.dumps_default = pyjsonrpc.rpcjson.iso_date_and_ndb_encoder
     """
 
     if isinstance(obj, datetime.datetime):
@@ -145,7 +186,7 @@ def date_time_and_ndb_encoder(obj):
         raise TypeError(repr(obj) + " is not JSON serializable")
 
 
-def activate_date_time_and_ndb_conversion():
+def activate_iso_date_and_ndb_conversion():
     """
     Activates the automatic conversion between ISO-Date and date/datetime and
     Google App Engine NDB - Key and BlobKeys
@@ -155,4 +196,4 @@ def activate_date_time_and_ndb_conversion():
     global dumps_default
 
     loads_object_hook = date_time_decoder
-    dumps_default = date_time_and_ndb_encoder
+    dumps_default = iso_date_and_ndb_encoder

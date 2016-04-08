@@ -15,7 +15,7 @@ import pyjsonrpc
 import pyjsonrpc.rpcjson
 
 # Activate encoder and decoder for DateTime-ISO strings and NDB keys
-pyjsonrpc.rpcjson.activate_date_time_and_ndb_conversion()
+pyjsonrpc.rpcjson.activate_iso_date_and_ndb_conversion()
 
 
 rpc_client = pyjsonrpc.HttpClient("http://localhost:8080")
