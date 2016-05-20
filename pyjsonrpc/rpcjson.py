@@ -13,11 +13,11 @@ except ImportError:
 # Date ISO formats
 ISO8601_10_DIGITS = "%Y-%m-%d"
 
-ISO8601_19_DIGITS = "%Y-%m-%dT%H:%M:%S"
-ISO8601_19_DIGITS_V2 = "%Y-%m-%d %H:%M:%S"
-
 ISO8601_17_DIGITS = "%Y-%m-%dT%H%M%S"
 ISO8601_17_DIGITS_V2 = "%Y-%m-%d %H%M%S"
+
+ISO8601_19_DIGITS = "%Y-%m-%dT%H:%M:%S"
+ISO8601_19_DIGITS_V2 = "%Y-%m-%d %H:%M:%S"
 
 ISO8601_20_DIGITS = "%Y-%m-%dT%H:%M:%SZ"
 ISO8601_20_DIGITS_V2 = "%Y-%m-%d %H:%M:%SZ"
@@ -126,20 +126,20 @@ def date_time_decoder(obj):
                 return date_obj.date()
             except (ValueError, TypeError):
                 return obj
-        elif obj_len == 19:
-            try:
-                return datetime.datetime.strptime(obj, ISO8601_19_DIGITS)
-            except (ValueError, TypeError):
-                try:
-                    return datetime.datetime.strptime(obj, ISO8601_19_DIGITS_V2)
-                except (ValueError, TypeError):
-                    return obj
         elif obj_len == 17:
             try:
                 return datetime.datetime.strptime(obj, ISO8601_17_DIGITS)
             except (ValueError, TypeError):
                 try:
                     return datetime.datetime.strptime(obj, ISO8601_17_DIGITS_V2)
+                except (ValueError, TypeError):
+                    return obj
+        elif obj_len == 19:
+            try:
+                return datetime.datetime.strptime(obj, ISO8601_19_DIGITS)
+            except (ValueError, TypeError):
+                try:
+                    return datetime.datetime.strptime(obj, ISO8601_19_DIGITS_V2)
                 except (ValueError, TypeError):
                     return obj
         elif obj_len == 20:
@@ -150,6 +150,10 @@ def date_time_decoder(obj):
                     return datetime.datetime.strptime(obj, ISO8601_20_DIGITS_V2)
                 except (ValueError, TypeError):
                     return obj
+        elif obj_len == 25:
+            # "2016-05-20T10:31:50+02:00"
+            if obj[19] in ["+", "-"]:
+                return date_time_decoder(obj[0:19])
         else:
             return obj
 

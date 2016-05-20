@@ -9,6 +9,15 @@ by Gerold Penz 2013-2016
 
 
 =============
+Version 0.9.1
+=============
+
+2016-05-20
+
+- New format for automatic conversion from ISO string to DateTime added.
+
+
+=============
 Version 0.9.0
 =============
 
