@@ -117,18 +117,24 @@ def http_request(
             request.add_header(key, val)
 
     # Send request to server
-    if ssl_context:
-        try:
-            response = urllib2.urlopen(
-                request, timeout = timeout, context = ssl_context
-            )
-        except TypeError as err:
-            if u"context" in unicode(err):
-                raise NotImplementedError(u"SSL-Context needs Python >= 2.7.9")
-            else:
-                raise
-    else:
-        response = urllib2.urlopen(request, timeout = timeout)
+    try:
+        if ssl_context:
+            try:
+                response = urllib2.urlopen(
+                    request, timeout = timeout, context = ssl_context
+                )
+            except TypeError as err:
+                if u"context" in unicode(err):
+                    raise NotImplementedError(u"SSL-Context needs Python >= 2.7.9")
+                else:
+                    raise
+        else:
+            response = urllib2.urlopen(request, timeout = timeout)
+    except urllib2.HTTPError as err:
+        if debug:
+            retval = err.read()
+            logging.debug(u"Client<--Server: {retval}".format(retval = repr(retval)))
+        raise
 
     # Analyze response and return result
     try:
