@@ -9,6 +9,15 @@ by Gerold Penz 2013-2016
 
 
 =============
+Version 0.9.2
+=============
+
+2016-07-18
+
+- If in Debug-Mode: http_request() writes the result to the log, if HttpError occures.
+
+
+=============
 Version 0.9.1
 =============
 
