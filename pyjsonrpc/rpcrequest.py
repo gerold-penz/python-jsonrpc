@@ -149,8 +149,25 @@ class Request(Bunch):
         )
 
 
+    @classmethod
+    def create(cls, method, *args, **kwargs):
+        """
+        Returns a request-object with unique id.
+
+        :param method: Name of the method
+        :param args: Positional parameters
+        :param kwargs: Named parameters
+        """
+
+        return Request.from_dict(create_request_dict(method, *args, **kwargs))
+
+
 # Alias for *Request.loads*
 parse_request_json = Request.from_string
+
+
+# Alias for *Request.create*
+create_request = Request.create
 
 
 def create_request_dict(method, *args, **kwargs):
@@ -188,7 +205,7 @@ def create_request_json(method, *args, **kwargs):
 
     return rpcjson.dumps(create_request_dict(method, *args, **kwargs))
 
-
 # Alias
 create_request_string = create_request_json
+
 

@@ -5,6 +5,7 @@ from rpcrequest import (
     parse_request_json,
     create_request_json,
     create_request_dict,
+    create_request,
     Request
 )
 from rpcresponse import (
