@@ -2,7 +2,10 @@
 # coding: utf-8
 
 import rpcjson
-from bunch import Bunch
+try:
+    from munch import Munch as Bunch
+except ImportError as err:
+    from bunch import Bunch
 from rpcerror import InternalError
 
 

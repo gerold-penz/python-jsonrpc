@@ -15,6 +15,6 @@ import logging
 
 logging.basicConfig(level = logging.DEBUG)
 
-rpc_client = pyjsonrpc.HttpClient("http://localhost:8080", gzipped = True, debug = True)
+rpc_client = pyjsonrpc.HttpClient("http://localhost:8080", gzipped = True, debug = False)
 
 print rpc_client.add(1, 2)

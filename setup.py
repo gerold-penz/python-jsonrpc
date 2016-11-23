@@ -3,8 +3,7 @@
 """
 Python JSON-RPC Library Client Server - Setup
  
-Created
-    2013-06-23 by Gerold - http://halvar.at/
+By Gerold - http://halvar.at/
 """
 
 import os
@@ -54,6 +53,6 @@ setup(
         "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
         "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
     ],
-    install_requires = ["bunch"],
+    install_requires = ["munch"],
 )
 

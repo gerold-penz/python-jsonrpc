@@ -8,6 +8,15 @@ by Gerold Penz 2013-2016
 - ToDo: Urllib3 for faster client requests
 
 
+==============
+Version 0.10.0
+==============
+
+2016-11-23
+
+- Replaced the *Bunch* library with the newer *Munch* library.
+
+
 =============
 Version 0.9.3
 =============

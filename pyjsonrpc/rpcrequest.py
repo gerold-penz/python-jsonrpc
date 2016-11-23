@@ -6,7 +6,10 @@ import traceback
 import uuid
 import rpcerror
 import rpcjson
-from bunch import Bunch
+try:
+    from munch import Munch as Bunch
+except ImportError as err:
+    from bunch import Bunch
 
 
 class Request(Bunch):
