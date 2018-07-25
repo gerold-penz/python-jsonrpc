@@ -17,7 +17,8 @@ Python JSON-RPC Client Server Library With Additional Support for BaseHTTPServer
 Python 3.x
 ==========
 
-This library is only for **Python 2.x**. You can not use it with Python 3.x.
+This library is only for **Python 2.x**. You can not use it with Python 3.x. But I am learning Python 3.x now.
+Maybe it could be for Python 3.x in the future.
 
 
 ============
